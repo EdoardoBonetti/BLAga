@@ -13,7 +13,7 @@ install it via git-clone:
 
 To configure and build some tests do
 
-    cd ASC-bla
+    cd bla_ga
     mkdir build
     cd build
     cmake ..
@@ -27,14 +27,14 @@ To use ASC-bla in your code, set the compiler include path properly, and include
     #include <vector.h>
     #include <matrix.h>
 
-All objects are implemented in the namespace ASC_bla. To use them with less typing, you can set
+All objects are implemented in the namespace bla_ga. To use them with less typing, you can set
 
-    namespace bla = ASC_bla;
+    namespace bla = bla_ga;
 
 or even
 
     
-    using namespace ASC_bla;
+    using namespace bla_ga;
 
     
 
