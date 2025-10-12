@@ -1,0 +1,73 @@
+# Welcome to bla_ga's documentation!
+
+
+ASC-bla is a C++ library for basic linear algebra operations.
+The library provides template classes **Vector** and **Matrix**.
+
+## Installation
+
+install it via git-clone:
+
+    git clone https://github.com/EdoardoBonetti/BLAga
+
+
+To configure and build some tests do
+
+    cd bla_ga
+    mkdir build
+    cd build
+    cmake ..
+    make
+    
+
+## Using bla_ga
+
+To use bla_ga in your code, set the compiler include path properly, and include the header files
+
+    #include <vector.h>
+    #include <matrix.h>
+
+All objects are implemented in the namespace bla_ga. To use them with less typing, you can set
+
+    namespace bla = bla_ga;
+
+or even
+
+    
+    using namespace bla_ga;
+
+    
+
+You can create vectors and compute with vectors like:
+
+                 
+```cpp
+Vector<double> x(5), y(5), z(5);
+for (int i = 0; i < x.Size(); i++)
+   x(i) = i;
+y = 5.0
+z = x+3*y;
+cout << "z = " << z << endl;
+```
+
+For matrices you can choose between row-major (`RowMajor`) or column-major (`ColMajor`) storage,
+default is row-major.
+
+```cpp
+Matrix<double,RowMajor> m1(5,3), m2(3,3);
+for (int i = 0; i < m1.Height(); i++)
+  for (int j = 0; j < m1.Width(); j++)
+    m1(i,j) = i+j;
+m2 = 3.7;
+Matrix product = m1 * m2;
+```
+
+You can extract a row or a column from a matrix:
+
+```cpp
+Vector col1 = product.Col(1);
+```
+
+some changes ...  
+
+   
