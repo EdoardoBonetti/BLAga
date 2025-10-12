@@ -76,18 +76,33 @@ namespace bla_ga
 
     T &operator()(size_t i, size_t j)
     {
-      if constexpr (ordering == ColMajor)
+      if constexpr (ORD == ColMajor)
+        return data[i * ncols + j];
+      else
+        return data[j * nrows + i];
+    }
+    const T &operator()(size_t i, size_t j) const
+    {
+      if (ORD == ColMajor)
         return data[i * ncols + j];
       else
         return data[j * nrows + i];
     }
 
-    const T &operator()(size_t i, size_t j) const
+    Vector<T> Col(size_t j)
     {
-      if (ordering == ColMajor)
-        return data[i * ncols + j];
-      else
-        return data[j * nrows + i];
+      Vector<T> col(nrows);
+      for (size_t i = 0; i < nrows; i++)
+        col(i) = (*this)(i, j);
+      return col;
+    }
+
+    Vector<T> Row(size_t i)
+    {
+      Vector<T> row(ncols);
+      for (size_t j = 0; j < ncols; j++)
+        row(j) = (*this)(i, j);
+      return row;
     }
 
     // Flatten returning data as vector
