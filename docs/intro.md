@@ -1,4 +1,4 @@
-# Welcome to ASC-bla's documentation!
+# Welcome to bla_ga's documentation!
 
 
 ASC-bla is a C++ library for basic linear algebra operations.
@@ -8,7 +8,7 @@ The library provides template classes **Vector** and **Matrix**.
 
 install it via git-clone:
 
-    git clone https://github.com/TUWien-ASC/ASC-bla.git
+    git clone https://github.com/EdoardoBonetti/BLAga
 
 
 To configure and build some tests do
@@ -20,9 +20,9 @@ To configure and build some tests do
     make
     
 
-## Using ASC-bla
+## Using bla_ga
 
-To use ASC-bla in your code, set the compiler include path properly, and include the header files
+To use bla_ga in your code, set the compiler include path properly, and include the header files
 
     #include <vector.h>
     #include <matrix.h>

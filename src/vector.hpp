@@ -3,65 +3,95 @@
 
 #include <iostream>
 
-namespace ASC_bla
+namespace bla_ga
 {
-  
+
   template <typename T>
   class Vector
   {
     size_t size;
-    T * data;
-    
+    T *data;
+
   public:
-    Vector (size_t _size) 
-      : size(_size), data(new T[size]) { ; }
-    
-    Vector (const Vector & v)
-      : Vector(v.Size())
+    Vector(size_t _size)
+        : size(_size), data(new T[size]) { ; }
+
+    Vector(const Vector &v)
+        : Vector(v.Size())
     {
       *this = v;
     }
 
-    Vector (Vector && v)
-      : size(0), data(nullptr)
+    Vector(Vector &&v)
+        : size(0), data(nullptr)
     {
       std::swap(size, v.size);
       std::swap(data, v.data);
     }
 
-    ~Vector () { delete [] data; }
-    
-    Vector & operator=(const Vector & v2)
+    ~Vector() { delete[] data; }
+
+    Vector &operator=(const Vector &v2)
     {
       for (size_t i = 0; i < size; i++)
         data[i] = v2(i);
       return *this;
     }
 
-    Vector & operator= (Vector && v2)
+    Vector &operator=(Vector &&v2)
     {
       std::swap(size, v2.size);
       std::swap(data, v2.data);
       return *this;
     }
-    
+
     size_t Size() const { return size; }
-    T & operator()(size_t i) { return data[i]; }
-    const T & operator()(size_t i) const { return data[i]; }
+    T &operator()(size_t i) { return data[i]; }
+    const T &operator()(size_t i) const { return data[i]; }
   };
 
-
-  template <typename T>
-  Vector<T> operator+ (const Vector<T> & a, const Vector<T> & b)
+  template <typename T, typename S>
+  auto operator+(const Vector<T> &a, const Vector<S> &b) -> Vector<decltype(std::declval<T>() + std::declval<S>())>
   {
-    Vector<T> sum(a.Size());
+    typedef decltype(std::declval<T>() + std::declval<S>()) U;
+    Vector<U> sum(a.Size());
     for (size_t i = 0; i < a.Size(); i++)
-      sum(i) = a(i)+b(i);
+      sum(i) = a(i) + b(i);
     return sum;
   }
-  
+
+  template <typename T, typename S>
+  auto operator-(const Vector<T> &a, const Vector<S> &b) -> Vector<decltype(std::declval<T>() - std::declval<S>())>
+  {
+    typedef decltype(std::declval<T>() - std::declval<S>()) U;
+    Vector<U> sum(a.Size());
+    for (size_t i = 0; i < a.Size(); i++)
+      sum(i) = a(i) - b(i);
+    return sum;
+  }
+
+  template <typename T, typename S>
+  auto operator*(const Vector<T> &a, const Vector<S> &b) -> decltype(std::declval<T>() * std::declval<S>())
+  {
+    typedef decltype(std::declval<T>() * std::declval<S>()) U;
+    U sum(0);
+    for (size_t i = 0; i < a.Size(); i++)
+      sum += a(i) * b(i);
+    return sum;
+  }
+
+  template <typename T, typename S>
+  auto operator*(const T &t, const Vector<S> &v) -> Vector<decltype(std::declval<T>() * std::declval<S>())>
+  {
+    typedef decltype(std::declval<T>() * std::declval<S>()) U;
+    Vector<U> sum(v.Size());
+    for (size_t i = 0; i < v.Size(); i++)
+      sum(i) = t * v(i);
+    return sum;
+  }
+
   template <typename T>
-  std::ostream & operator<< (std::ostream & ost, const Vector<T> & v)
+  std::ostream &operator<<(std::ostream &ost, const Vector<T> &v)
   {
     if (v.Size() > 0)
       ost << v(0);
@@ -69,7 +99,7 @@ namespace ASC_bla
       ost << ", " << v(i);
     return ost;
   }
-  
+
 }
 
 #endif
