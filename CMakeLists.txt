@@ -4,7 +4,6 @@ project(bla_ga)
 set (CMAKE_CXX_STANDARD 17)
 
 include_directories(src)
-
 add_subdirectory (demos)
 
 
@@ -19,17 +18,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(catch2)
 
-# ---- Add tests ----
 enable_testing()
 add_subdirectory(tests)
-
-
-
-# Make sure testing is enabled
-enable_testing()
-
-# Run tests automatically when you build
 add_custom_target(run_tests ALL
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
     DEPENDS tests  # the test executable(s)
 )
+
+
+
