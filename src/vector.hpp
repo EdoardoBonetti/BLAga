@@ -19,6 +19,13 @@ namespace bla_ga
       ;
     }
 
+    Vector(size_t _size, const T &t)
+        : size(_size), data(new T[size])
+    {
+      for (size_t i = 0; i < size; i++)
+        data[i] = T(t);
+    }
+
     Vector(const Vector &v)
         : Vector(v.Size())
     {
@@ -46,6 +53,30 @@ namespace bla_ga
       std::swap(size, v2.size);
       std::swap(data, v2.data);
       return *this;
+    }
+
+    Vector &operator=(const T &t)
+    {
+      for (size_t i = 0; i < size; i++)
+        data[i] = T(t);
+      return *this;
+    }
+
+    Vector &operator+=(const Vector &v2)
+    {
+      for (size_t i = 0; i < size; i++)
+        data[i] += v2(i);
+      return *this;
+    }
+
+    bool operator==(const Vector &v2) const
+    {
+      if (size != v2.size)
+        return false;
+      for (size_t i = 0; i < size; i++)
+        if (data[i] != v2(i))
+          return false;
+      return true;
     }
 
     size_t Size() const { return size; }
@@ -91,6 +122,13 @@ namespace bla_ga
     for (size_t i = 0; i < v.Size(); i++)
       sum(i) = t * v(i);
     return sum;
+  }
+
+  template <typename T>
+  auto Ones(size_t n) -> Vector<T>
+  {
+    Vector<T> ones(n, T(1));
+    return ones;
   }
 
   template <typename T>

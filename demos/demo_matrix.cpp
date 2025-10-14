@@ -21,7 +21,7 @@ int main()
   x(1, 2) = 6;
   x(2, 0) = 7;
   x(2, 1) = 8;
-  x(2, 2) = 9;
+  x(2, 2) = 20;
 
   std::cout << x << std::endl;
 
@@ -49,4 +49,36 @@ int main()
   std::cout << std::endl;
   std::cout << y * x << std::endl;
   std::cout << x * y << std::endl;
+
+  bla::Vector<double> v(3);
+  v(0) = 1;
+  v(1) = 1;
+  v(2) = 1;
+  std::cout << "v" << std::endl
+            << v << std::endl;
+
+  std::cout << "x" << std::endl
+            << x << std::endl;
+
+  std::cout << "x*v" << std::endl
+            << x * v << std::endl;
+
+  std::cout << "v*x" << std::endl
+            << v * x << std::endl
+            << std::endl;
+
+  // Glue side by side and top bottom :
+
+  std::cout << "x H y" << std::endl
+            << bla::HGlue(x, y) << std::endl;
+  std::cout << "x V y" << std::endl
+            << bla::VGlue(x, y) << std::endl;
+
+  // preform gaussian eleiminatino:
+
+  std::cout << "gaussian elimination" << std::endl
+            << bla::GaussElimination<>(x) << std::endl;
+
+  // x*invx = bla::GaussElimination(x)*x
+  std::cout << "x*invx = " << bla::GaussElimination<double, colmaj>(x) * x << std::endl;
 }
