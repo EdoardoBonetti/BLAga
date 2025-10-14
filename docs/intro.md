@@ -1,8 +1,8 @@
-# Welcome to bla_ga's documentation!
+# Welcome to BLAga's documentation!
 
 
-ASC-bla is a C++ library for basic linear algebra operations.
-The library provides template classes **Vector** and **Matrix**.
+BLAga is a C++ library for basic linear algebra operations.
+The library provides template classes **Vector** and **Matrix**
 
 ## Installation
 
@@ -20,7 +20,7 @@ To configure and build some tests do
     make
     
 
-## Using bla_ga
+## Using BLAga
 
 To use bla_ga in your code, set the compiler include path properly, and include the header files
 

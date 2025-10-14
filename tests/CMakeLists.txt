@@ -1,6 +1,7 @@
 # Create test executable
 add_executable(tests
     test_vector.cpp
+    test_matrix.cpp
 )
 
 # Link with your project’s library (or src)
