@@ -67,3 +67,114 @@ button:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: #00ffff;
 }
+
+
+body {
+  background: radial-gradient(circle at 20% 30%, #1a0033, #000);
+  animation: pulse 1s infinite alternate;
+}
+@keyframes pulse {
+  0% { background-position: 0% 0%; filter: hue-rotate(0deg); }
+  100% { background-position: 100% 100%; filter: hue-rotate(360deg); }
+}
+
+
+
+
+.glitch {
+  position: relative;
+  color: #0ff;
+  text-shadow: 0 0 3px #0ff;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.glitch::before {
+  color: #f0f;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  animation: glitchTop 1s infinite linear alternate-reverse;
+}
+.glitch::after {
+  color: #00f;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  animation: glitchBottom 1s infinite linear alternate-reverse;
+}
+@keyframes glitchTop   { 0% {transform: translate(0);} 100% {transform: translate(2px,-2px);} }
+@keyframes glitchBottom{ 0% {transform: translate(0);} 100% {transform: translate(-2px,2px);} }
+
+
+.glitch {
+  position: relative;
+  color: #0ff;
+  text-shadow: 0 0 3px #0ff;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.glitch::before {
+  color: #f0f;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  animation: glitchTop 1s infinite linear alternate-reverse;
+}
+.glitch::after {
+  color: #00f;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  animation: glitchBottom 1s infinite linear alternate-reverse;
+}
+@keyframes glitchTop   { 0% {transform: translate(0);} 100% {transform: translate(2px,-2px);} }
+@keyframes glitchBottom{ 0% {transform: translate(0);} 100% {transform: translate(-2px,2px);} }
+
+
+body {
+  background: linear-gradient(-45deg, #0ff, #f0f, #00f, #ff00ff);
+  background-size: 400% 400%;
+  animation: gradientMove 1s ease infinite;
+  color: #f0f0f0;
+}
+
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  background-color: #050505;
+  background-image: 
+    linear-gradient(0deg, rgba(0,255,255,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.2) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: moveGrid 1s linear infinite;
+  color: #eee;
+}
+
+@keyframes moveGrid {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 40px 40px, 40px 40px; }
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,255,255,0.1), transparent);
+  pointer-events: none;
+}
+
+body {
+  background:
+    linear-gradient(-45deg, #ff00ff, #00ffff, #0000ff, #ff00ff),
+    linear-gradient(0deg, rgba(0,255,255,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,0,255,0.2) 1px, transparent 1px);
+  background-size: 400% 400%, 40px 40px, 40px 40px;
+  animation: gradientMove 2s ease infinite, moveGrid 8s linear infinite;
+}
