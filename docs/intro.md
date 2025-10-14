@@ -55,8 +55,8 @@ default is row-major.
 
 ```cpp
 Matrix<double,RowMajor> m1(5,3), m2(3,3);
-for (int i = 0; i < m1.Height(); i++)
-  for (int j = 0; j < m1.Width(); j++)
+for (int i = 0; i < m1.nCols(); i++)
+  for (int j = 0; j < m1.nRows(); j++)
     m1(i,j) = i+j;
 m2 = 3.7;
 Matrix product = m1 * m2;
@@ -66,6 +66,11 @@ You can extract a row or a column from a matrix:
 
 ```cpp
 Vector col1 = product.Col(1);
+```
+
+
+```cpp
+Matrix cols12 = product.Cols(1,3);
 ```
 
 some changes ...  
