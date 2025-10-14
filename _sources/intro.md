@@ -1,14 +1,4 @@
-# Welcome to BLAga's documentation!
-<div class="glow">
-  <h1>Welcome to BLAga</h1>
-</div>
-
-<style>
-.glow h1 {
-  color: #0ff;
-  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-}
-</style>
+# Welcome to BLAga documentation
 
 BLAga is a C++ library for basic linear algebra operations.
 The library provides template classes **Vector** and **Matrix**
@@ -82,6 +72,9 @@ Vector col1 = product.Col(1);
 Matrix cols12 = product.Cols(1,3);
 ```
 
-some changes ...  
 
-   
+
+# Interactive Expanding Ball
+
+Click inside the box:
+
