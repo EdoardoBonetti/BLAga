@@ -14,7 +14,10 @@ namespace bla_ga
 
   public:
     Vector(size_t _size)
-        : size(_size), data(new T[size]) { ; }
+        : size(_size), data(new T[size])
+    {
+      ;
+    }
 
     Vector(const Vector &v)
         : Vector(v.Size())
@@ -63,7 +66,7 @@ namespace bla_ga
   template <typename T, typename S>
   auto operator-(const Vector<T> &a, const Vector<S> &b) -> Vector<decltype(std::declval<T>() - std::declval<S>())>
   {
-    typedef decltype(std::declval<T>() - std::declval<S>()) U;
+    using U = decltype(T{} - S{});
     Vector<U> sum(a.Size());
     for (size_t i = 0; i < a.Size(); i++)
       sum(i) = a(i) - b(i);
