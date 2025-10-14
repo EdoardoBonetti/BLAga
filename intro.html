@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Welcome to bla_ga’s documentation! &#8212; Introduction to Scientific Computing</title>
+    <title>Welcome to BLAga’s documentation! &#8212; BLAga</title>
   
   
   
@@ -153,8 +153,8 @@
       
     
     
-    <img src="_static/Blaga_logo.jpg" class="logo__image only-light" alt="Introduction to Scientific Computing - Home"/>
-    <script>document.write(`<img src="_static/Blaga_logo.jpg" class="logo__image only-dark" alt="Introduction to Scientific Computing - Home"/>`);</script>
+    <img src="_static/Blaga_logo.jpg" class="logo__image only-light" alt="BLAga - Home"/>
+    <script>document.write(`<img src="_static/Blaga_logo.jpg" class="logo__image only-dark" alt="BLAga - Home"/>`);</script>
   
   
 </a></div>
@@ -175,7 +175,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    Welcome to bla_ga’s documentation!
+                    Welcome to BLAga’s documentation!
                 </a>
             </li>
         </ul>
@@ -221,7 +221,7 @@
 <div class="article-header-buttons">
 
 
-<a href="https://github.com/JSchoeberl/IntroSC.git" target="_blank"
+<a href="https://github.com/EdoardoBonetti/BLAga" target="_blank"
    class="btn btn-sm btn-source-repository-button"
    title="Source repository"
    data-bs-placement="bottom" data-bs-toggle="tooltip"
@@ -331,7 +331,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Welcome to bla_ga’s documentation!</h1>
+    <h1>Welcome to BLAga’s documentation!</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -342,7 +342,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-bla-ga">Using bla_ga</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-blaga">Using BLAga</a></li>
 </ul>
             </nav>
         </div>
@@ -354,10 +354,10 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="welcome-to-bla-ga-s-documentation">
-<h1>Welcome to bla_ga’s documentation!<a class="headerlink" href="#welcome-to-bla-ga-s-documentation" title="Link to this heading">#</a></h1>
-<p>ASC-bla is a C++ library for basic linear algebra operations.
-The library provides template classes <strong>Vector</strong> and <strong>Matrix</strong>.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="welcome-to-blaga-s-documentation">
+<h1>Welcome to BLAga’s documentation!<a class="headerlink" href="#welcome-to-blaga-s-documentation" title="Link to this heading">#</a></h1>
+<p>BLAga is a C++ library for basic linear algebra operations.
+The library provides template classes <strong>Vector</strong> and <strong>Matrix</strong></p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>install it via git-clone:</p>
@@ -373,8 +373,8 @@ make
 </pre></div>
 </div>
 </section>
-<section id="using-bla-ga">
-<h2>Using bla_ga<a class="headerlink" href="#using-bla-ga" title="Link to this heading">#</a></h2>
+<section id="using-blaga">
+<h2>Using BLAga<a class="headerlink" href="#using-blaga" title="Link to this heading">#</a></h2>
 <p>To use bla_ga in your code, set the compiler include path properly, and include the header files</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;vector.h&gt;
 #include &lt;matrix.h&gt;
@@ -400,8 +400,8 @@ make
 <p>For matrices you can choose between row-major (<code class="docutils literal notranslate"><span class="pre">RowMajor</span></code>) or column-major (<code class="docutils literal notranslate"><span class="pre">ColMajor</span></code>) storage,
 default is row-major.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="n">RowMajor</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m1</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">m2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">Height</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">Width</span><span class="p">();</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">nCols</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m1</span><span class="p">.</span><span class="n">nRows</span><span class="p">();</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
 <span class="w">    </span><span class="n">m1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">;</span>
 <span class="n">m2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.7</span><span class="p">;</span>
 <span class="n">Matrix</span><span class="w"> </span><span class="n">product</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m2</span><span class="p">;</span>
@@ -409,6 +409,9 @@ default is row-major.</p>
 </div>
 <p>You can extract a row or a column from a matrix:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="w"> </span><span class="n">col1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">product</span><span class="p">.</span><span class="n">Col</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Matrix</span><span class="w"> </span><span class="n">cols12</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">product</span><span class="p">.</span><span class="n">Cols</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>some changes …</p>
@@ -462,7 +465,7 @@ default is row-major.</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-bla-ga">Using bla_ga</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-blaga">Using BLAga</a></li>
 </ul>
   </nav></div>
 
@@ -477,7 +480,7 @@ default is row-major.</p>
   <div class="footer-item">
     
 <p class="component-author">
-By J. Schöberl
+By E. Bonetti
 </p>
 
   </div>
