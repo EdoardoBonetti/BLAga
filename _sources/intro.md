@@ -1,5 +1,14 @@
 # Welcome to BLAga's documentation!
+<div class="glow">
+  <h1>Welcome to BLAga</h1>
+</div>
 
+<style>
+.glow h1 {
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+}
+</style>
 
 BLAga is a C++ library for basic linear algebra operations.
 The library provides template classes **Vector** and **Matrix**
