@@ -1,15 +1,15 @@
-#ifndef FILE_VECTOR
-#define FILE_VECTOR
+#ifndef FILE_MATRIX
+#define FILE_MATRIX
 
 #include <iostream>
 
-#include "vectorexpression.hpp"
+#include "matrixexpression.hpp"
 
 namespace ASC_bla
 {
 
   template <typename T, typename TDIST = std::integral_constant<size_t, 1>>
-  class VectorView : public VecExpr<VectorView<T, TDIST>>
+  class MatrixView : public VecExpr<MatrixView<T, TDIST>>
   {
   protected:
     T *data;
@@ -17,28 +17,28 @@ namespace ASC_bla
     TDIST dist;
 
   public:
-    VectorView() = default;
-    VectorView(const VectorView &) = default;
+    MatrixView() = default;
+    MatrixView(const MatrixView &) = default;
 
     template <typename TDIST2>
-    VectorView(const VectorView<T, TDIST2> &v2)
+    MatrixView(const MatrixView<T, TDIST2> &v2)
         : data(v2.Data()), size(v2.Size()), dist(v2.Dist()) {}
 
-    VectorView(size_t _size, T *_data)
+    MatrixView(size_t _size, T *_data)
         : data(_data), size(_size) {}
 
-    VectorView(size_t _size, TDIST _dist, T *_data)
+    MatrixView(size_t _size, TDIST _dist, T *_data)
         : data(_data), size(_size), dist(_dist) {}
 
     template <typename TB>
-    VectorView &operator=(const VecExpr<TB> &v2)
+    MatrixView &operator=(const VecExpr<TB> &v2)
     {
       for (size_t i = 0; i < size; i++)
         data[dist * i] = v2(i);
       return *this;
     }
 
-    VectorView &operator=(T scal)
+    MatrixView &operator=(T scal)
     {
       for (size_t i = 0; i < size; i++)
         data[dist * i] = scal;
@@ -54,25 +54,25 @@ namespace ASC_bla
 
     auto Range(size_t first, size_t next) const
     {
-      return VectorView(next - first, dist, data + first * dist);
+      return MatrixView(next - first, dist, data + first * dist);
     }
 
     auto Slice(size_t first, size_t slice) const
     {
-      return VectorView<T, size_t>(size / slice, dist * slice, data + first * dist);
+      return MatrixView<T, size_t>(size / slice, dist * slice, data + first * dist);
     }
   };
 
   template <typename T>
-  class Vector : public VectorView<T>
+  class Vector : public MatrixView<T>
   {
-    typedef VectorView<T> BASE;
+    typedef MatrixView<T> BASE;
     using BASE::data;
     using BASE::size;
 
   public:
     Vector(size_t size)
-        : VectorView<T>(size, new T[size]) { ; }
+        : MatrixView<T>(size, new T[size]) { ; }
 
     Vector(const Vector &v)
         : Vector(v.Size())
@@ -81,7 +81,7 @@ namespace ASC_bla
     }
 
     Vector(Vector &&v)
-        : VectorView<T>(0, nullptr)
+        : MatrixView<T>(0, nullptr)
     {
       std::swap(size, v.size);
       std::swap(data, v.data);
@@ -113,7 +113,7 @@ namespace ASC_bla
   };
 
   template <typename... Args>
-  std::ostream &operator<<(std::ostream &ost, const VectorView<Args...> &v)
+  std::ostream &operator<<(std::ostream &ost, const MatrixView<Args...> &v)
   {
     if (v.Size() > 0)
       ost << v(0);
