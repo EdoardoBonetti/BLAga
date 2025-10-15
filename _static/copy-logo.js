@@ -1,5 +1,5 @@
 (function() {
-  const logoSrc = "_static/logo.jpg";  // your logo path
+  const logoSrc = "_static/dino.jpeg";  // your logo path
 
   let lastMouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   document.addEventListener("mousemove", e => {
@@ -18,7 +18,7 @@
     img.style.pointerEvents = "none";
     img.style.opacity = "1";
     img.style.transform = "translate(-50%, -50%) scale(1) rotate(0deg)";
-    img.style.transition = "transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.5s ease-out";
+    img.style.transition = "transform 3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 3s ease-out";
     img.style.zIndex = "99999";
     img.style.filter = "drop-shadow(0 0 10px #0ff) drop-shadow(0 0 20px #f0f)";
 

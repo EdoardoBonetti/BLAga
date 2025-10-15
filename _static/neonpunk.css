@@ -178,3 +178,15 @@ body {
   background-size: 400% 400%, 40px 40px, 40px 40px;
   animation: gradientMove 2s ease infinite, moveGrid 8s linear infinite;
 }
+
+/* _static/custom.css */
+body[data-theme="insane"] {
+    background-color: black;
+    color: lime;
+}
+
+body[data-theme="insane"] a {
+    color: hotpink;
+}
+
+/* Add any insane styling you like */
