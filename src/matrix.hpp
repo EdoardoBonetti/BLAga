@@ -13,6 +13,7 @@ namespace bla_ga
     ColMajor
   };
 
+  /*------------MatrixView------------*/
   template <typename T = double, ORDERING ORD = RowMajor, typename TDIST = std::integral_constant<size_t, 1>>
   class MatrixView : public MatExpr<MatrixView<T, ORD, TDIST>>
   {
@@ -97,6 +98,7 @@ namespace bla_ga
     }
   };
 
+  /*------------Matrix------------*/
   template <typename T = double, ORDERING ORD = RowMajor>
   class Matrix : public MatrixView<T, ORD>
   {
@@ -168,6 +170,7 @@ namespace bla_ga
     Vector<T> Flatten() const { return Vector<T>(nrows * ncols, data); }
   };
 
+  /*------------operator<<------------*/
   template <typename... Args>
   std::ostream &operator<<(std::ostream &ost, const MatrixView<Args...> &m)
   {

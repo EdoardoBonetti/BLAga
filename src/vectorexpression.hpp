@@ -9,6 +9,7 @@
 namespace bla_ga
 {
 
+  /*------------VecExpr------------*/
   template <typename T>
   class VecExpr
   {
@@ -17,6 +18,8 @@ namespace bla_ga
     size_t Size() const { return Upcast().Size(); }
     auto operator()(size_t i) const { return Upcast()(i); }
   };
+
+  /*------------SumVecExpr------------*/
 
   template <typename TA, typename TB>
   class SumVecExpr : public VecExpr<SumVecExpr<TA, TB>>
@@ -37,6 +40,7 @@ namespace bla_ga
     return SumVecExpr(a.Upcast(), b.Upcast());
   }
 
+  /*------------SubVecExpr------------*/
   template <typename TA, typename TB>
   class SubVecExpr : public VecExpr<SubVecExpr<TA, TB>>
   {
@@ -56,6 +60,7 @@ namespace bla_ga
     return SubVecExpr(a.Upcast(), b.Upcast());
   }
 
+  /*------------NegVecExpr------------*/
   template <typename TA>
   class NegVecExpr : public VecExpr<NegVecExpr<TA>>
   {
@@ -74,6 +79,7 @@ namespace bla_ga
     return NegVecExpr(-a.Upcast());
   }
 
+  /*------------ScaleVecExpr------------*/
   template <typename T>
   struct is_scalar_type
   {
@@ -109,6 +115,7 @@ namespace bla_ga
     return ScaleVecExpr(scal, v.Upcast());
   }
 
+  /*------------MultVecExpr------------*/
   template <typename TA, typename TB>
   class MultVecExpr : public VecExpr<MultVecExpr<TA, TB>>
   {
@@ -138,6 +145,7 @@ namespace bla_ga
     return MultVecExpr(a.Upcast(), b.Upcast());
   }
 
+  /*------------operator<<------------*/
   template <typename T>
   std::ostream &operator<<(std::ostream &ost, const VecExpr<T> &v)
   {

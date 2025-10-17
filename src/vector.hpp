@@ -8,6 +8,7 @@
 namespace bla_ga
 {
 
+  /*------------VectorView------------*/
   template <typename T, typename TDIST = std::integral_constant<size_t, 1>>
   class VectorView : public VecExpr<VectorView<T, TDIST>>
   {
@@ -63,6 +64,7 @@ namespace bla_ga
     }
   };
 
+  /*------------Vector------------*/
   template <typename T>
   class Vector : public VectorView<T>
   {
@@ -128,6 +130,7 @@ namespace bla_ga
     }
   };
 
+  /*------------operator<<------------*/
   template <typename... Args>
   std::ostream &operator<<(std::ostream &ost, const VectorView<Args...> &v)
   {

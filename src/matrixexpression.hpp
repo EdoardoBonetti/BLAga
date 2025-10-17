@@ -1,3 +1,7 @@
+/*
+Author: Edoardo Bonetti
+*/
+
 #ifndef FILE_MAT_EXPRESSION
 #define FILE_MAT_EXPRESSION
 
@@ -5,7 +9,7 @@
 
 namespace bla_ga
 {
-
+  /*------------MatExpr------------*/
   template <typename T>
   class MatExpr
   {
@@ -16,6 +20,7 @@ namespace bla_ga
     auto operator()(size_t i, size_t j) const { return Upcast()(i, j); }
   };
 
+  /*------------SumMatExpr------------*/
   template <typename TA, typename TB>
   class SumMatExpr : public MatExpr<SumMatExpr<TA, TB>>
   {
@@ -36,6 +41,7 @@ namespace bla_ga
     return SumMatExpr(a.Upcast(), b.Upcast());
   }
 
+  /*------------ScaleMatExpr------------*/
   template <typename TSCAL, typename T>
   class ScaleMatExpr : public MatExpr<ScaleMatExpr<TSCAL, T>>
   {
@@ -56,6 +62,7 @@ namespace bla_ga
     return ScaleMatExpr(scal, m.Upcast());
   }
 
+  /*------------MultMatExpr------------*/
   template <typename TA, typename TB>
   class MultMatExpr : public MatExpr<MultMatExpr<TA, TB>>
   {
@@ -90,6 +97,7 @@ namespace bla_ga
     return MultMatExpr(a.Upcast(), b.Upcast());
   }
 
+  /*------------operator<<------------*/
   template <typename T>
   std::ostream &operator<<(std::ostream &ost, const MatExpr<T> &m)
   {
@@ -106,6 +114,5 @@ namespace bla_ga
     return ost;
   }
 
-}
-
+} // namespace bla_ga
 #endif
