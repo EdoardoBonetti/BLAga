@@ -5,7 +5,7 @@
 
 #include "vectorexpression.hpp"
 
-namespace ASC_bla
+namespace bla_ga
 {
 
   template <typename T, typename TDIST = std::integral_constant<size_t, 1>>

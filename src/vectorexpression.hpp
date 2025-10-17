@@ -1,7 +1,7 @@
 #ifndef FILE_VEC_EXPRESSION
 #define FILE_VEC_EXPRESSION
 
-namespace ASC_bla
+namespace bla_ga
 {
 
   template <typename T>
@@ -49,6 +49,35 @@ namespace ASC_bla
   auto operator*(double scal, const VecExpr<T> &v)
   {
     return ScaleVecExpr(scal, v.Upcast());
+  }
+
+  template <typename TA, typename TB>
+  class MultVecExpr : public VecExpr<MultVecExpr<TA, TB>>
+  {
+    TA a;
+    TB b;
+
+  public:
+    MultVecExpr(TA _a, TB _b) : a(_a), b(_b) {}
+
+    auto operator()(size_t i) const
+    {
+      using A = std::invoke_result<TA, size_t>::type;
+      using B = std::invoke_result<TB, size_t>::type;
+      using U = decltype(std::declval<A>() * std::declval<B>());
+      U sum = U(0);
+      for (size_t k = 0; k < a.Size(); k++)
+        sum += a(k) * b(k);
+      return sum;
+    }
+
+    size_t Size() const { return 1; }
+  };
+
+  template <typename TA, typename TB>
+  auto operator*(const VecExpr<TA> &a, const VecExpr<TB> &b)
+  {
+    return MultVecExpr(a.Upcast(), b.Upcast());
   }
 
   template <typename T>

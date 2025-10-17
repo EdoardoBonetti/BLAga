@@ -5,123 +5,181 @@
 
 #include "matrixexpression.hpp"
 
-namespace ASC_bla
+namespace bla_ga
 {
+  enum ORDERING
+  {
+    RowMajor,
+    ColMajor
+  };
 
-  template <typename T, typename TDIST = std::integral_constant<size_t, 1>>
-  class MatrixView : public VecExpr<MatrixView<T, TDIST>>
+  template <typename T, ORDERING ORD, typename TDIST = std::integral_constant<size_t, 1>>
+  class MatrixView : public MatExpr<MatrixView<T, ORD, TDIST>>
   {
   protected:
     T *data;
-    size_t size;
+    size_t nrows;
+    size_t ncols;
     TDIST dist;
+
+    constexpr size_t Index(size_t i, size_t j) const noexcept
+    {
+      if constexpr (ORD == RowMajor)
+        return i * ncols + j; // row-major contiguous
+      else
+        return j * nrows + i; // column-major contiguous
+    }
 
   public:
     MatrixView() = default;
     MatrixView(const MatrixView &) = default;
 
-    template <typename TDIST2>
-    MatrixView(const MatrixView<T, TDIST2> &v2)
-        : data(v2.Data()), size(v2.Size()), dist(v2.Dist()) {}
+    template <typename TDIST2, ORDERING ORD2>
+    MatrixView(const MatrixView<T, ORD2, TDIST2> &m2)
+        : data(m2.Data()), nrows(m2.nRows()), ncols(m2.nCols()), dist(m2.Dist()) {}
 
-    MatrixView(size_t _size, T *_data)
-        : data(_data), size(_size) {}
-
-    MatrixView(size_t _size, TDIST _dist, T *_data)
-        : data(_data), size(_size), dist(_dist) {}
-
-    template <typename TB>
-    MatrixView &operator=(const VecExpr<TB> &v2)
+    MatrixView(size_t _nrows, size_t _ncols, T *_data)
+        : data(_data), nrows(_nrows), ncols(_ncols)
     {
-      for (size_t i = 0; i < size; i++)
-        data[dist * i] = v2(i);
-      return *this;
+      dist = std::integral_constant<size_t, 1>();
     }
 
-    MatrixView &operator=(T scal)
+    MatrixView(size_t _nrows, size_t _ncols, TDIST _dist, T *_data)
+        : data(_data), nrows(_nrows), ncols(_ncols), dist(_dist) {}
+
+    template <typename TB>
+    MatrixView &operator=(const MatExpr<TB> &m2)
     {
-      for (size_t i = 0; i < size; i++)
-        data[dist * i] = scal;
+      for (size_t i = 0; i < nrows; i++)
+        for (size_t j = 0; j < ncols; j++)
+          data[Index(i, j)] = m2(i, j);
       return *this;
     }
 
     T *Data() const { return data; }
-    size_t Size() const { return size; }
+    size_t nCols() const { return ncols; }
+    size_t nRows() const { return nrows; }
     auto Dist() const { return dist; }
-
-    T &operator()(size_t i) { return data[dist * i]; }
-    const T &operator()(size_t i) const { return data[dist * i]; }
-
-    auto Range(size_t first, size_t next) const
+    T &operator()(size_t i, size_t j)
     {
-      return MatrixView(next - first, dist, data + first * dist);
+      return data[Index(i, j)];
     }
 
-    auto Slice(size_t first, size_t slice) const
+    const T &operator()(size_t i, size_t j) const
     {
-      return MatrixView<T, size_t>(size / slice, dist * slice, data + first * dist);
-    }
-  };
-
-  template <typename T>
-  class Vector : public MatrixView<T>
-  {
-    typedef MatrixView<T> BASE;
-    using BASE::data;
-    using BASE::size;
-
-  public:
-    Vector(size_t size)
-        : MatrixView<T>(size, new T[size]) { ; }
-
-    Vector(const Vector &v)
-        : Vector(v.Size())
-    {
-      *this = v;
+      return data[Index(i, j)];
     }
 
-    Vector(Vector &&v)
-        : MatrixView<T>(0, nullptr)
+    VectorView<T, TDIST> Flattened() const
     {
-      std::swap(size, v.size);
-      std::swap(data, v.data);
+      return VectorView<T, TDIST>(nrows * ncols, data);
     }
 
     template <typename TB>
-    Vector(const VecExpr<TB> &v)
-        : Vector(v.Size())
+    MatrixView &operator+=(const MatExpr<TB> &m2)
     {
-      *this = v;
-    }
-
-    ~Vector() { delete[] data; }
-
-    using BASE::operator=;
-    Vector &operator=(const Vector &v2)
-    {
-      for (size_t i = 0; i < size; i++)
-        data[i] = v2(i);
+      for (size_t i = 0; i < nrows; i++)
+        for (size_t j = 0; j < ncols; j++)
+          (*this)(i, j) += m2(i, j);
       return *this;
     }
 
-    Vector &operator=(Vector &&v2)
+    template <typename TB>
+    MatrixView &operator-=(const MatExpr<TB> &m2)
     {
-      std::swap(size, v2.size);
-      std::swap(data, v2.data);
+      for (size_t i = 0; i < nrows; i++)
+        for (size_t j = 0; j < ncols; j++)
+          (*this)(i, j) -= m2(i, j);
+      return *this;
+    }
+
+    MatrixView &operator*=(T scal)
+    {
+      for (size_t i = 0; i < nrows; i++)
+        for (size_t j = 0; j < ncols; j++)
+          (*this)(i, j) *= scal;
+      return *this;
+    }
+  };
+
+  template <typename T, ORDERING ORD>
+  class Matrix : public MatrixView<T, ORD>
+  {
+    typedef MatrixView<T, ORD> BASE;
+    using BASE::data;
+    using BASE::dist;
+    using BASE::ncols;
+    using BASE::nrows;
+
+  protected:
+    constexpr size_t Index(size_t i, size_t j) const noexcept
+    {
+      return data->Index(i, j);
+    }
+
+  public:
+    Matrix(size_t nrows, size_t ncols)
+        : MatrixView<T, ORD>(nrows, ncols, new T[nrows * ncols]) {}
+
+    Matrix(const Matrix &m)
+        : Matrix(m.nRows(), m.nCols())
+    {
+      *this = m;
+    }
+
+    Matrix(Matrix &&m)
+        : MatrixView<T, ORD>(0, 0, nullptr)
+    {
+      std::swap(nrows, m.nrows);
+      std::swap(ncols, m.ncols);
+      std::swap(data, m.data);
+    }
+
+    template <typename TB>
+    Matrix(const MatExpr<TB> &m)
+        : Matrix(m.nRows(), m.nCols())
+    {
+      *this = m;
+    }
+
+    ~Matrix() { delete[] data; }
+
+    using BASE::operator=;
+    Matrix &operator=(const Matrix &m2)
+    {
+
+      size_t dist = nrows;
+      for (size_t i = 0; i < nrows; i++)
+        for (size_t j = 0; j < ncols; j++)
+          data[Index(i, j)] = m2(i, j);
+      return *this;
+    }
+
+    Matrix &operator=(Matrix &&m2)
+    {
+      std::swap(nrows, m2.nrows);
+      std::swap(ncols, m2.ncols);
+      std::swap(data, m2.data);
       return *this;
     }
   };
 
   template <typename... Args>
-  std::ostream &operator<<(std::ostream &ost, const MatrixView<Args...> &v)
+  std::ostream &operator<<(std::ostream &ost, const MatrixView<Args...> &m)
   {
-    if (v.Size() > 0)
-      ost << v(0);
-    for (size_t i = 1; i < v.Size(); i++)
-      ost << ", " << v(i);
+    if (m.nRows() > 0 && m.nCols() > 0)
+      for (size_t i = 0; i < m.nRows(); i++)
+      {
+        for (size_t j = 0; j < m.nCols(); j++)
+        {
+          ost << " " << m(i, j);
+        }
+        ost << std::endl;
+      }
+
     return ost;
   }
 
-}
+} // namespace ASC_bla
 
 #endif
