@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.20)
 project(bla_ga)
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 include_directories(src)
 add_subdirectory (demos)
 
+
+# add optimization flags O3 and for math library
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 ")
 
 
 

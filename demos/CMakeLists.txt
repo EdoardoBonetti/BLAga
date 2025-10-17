@@ -4,5 +4,8 @@ target_sources (demo_vector PUBLIC ../src/vector.hpp)
 add_executable (demo_matrix demo_matrix.cpp)
 target_sources (demo_matrix PUBLIC ../src/matrix.hpp)
 
+# add optimization flags O3 and for math library
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3  -lm")
+
 add_executable (demo_benchmark demo_benchmark.cpp)
 target_sources (demo_matrix PUBLIC ../src/matrix.hpp)
