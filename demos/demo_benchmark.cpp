@@ -23,7 +23,8 @@ void benchmark_matrix_matrix_multiplication(int iterations, int m, int k, int n)
     Matrix<double, ORDS> mat2(k, n);
     for (int i = 0; i < k; i++)
         for (int j = 0; j < n; j++)
-            mat2(i, j) = 1.0;
+            mat2(i, j) = 1.0 + 1 / (vali * double(i) + valj * double(j) + 3.2);
+    ;
 
     // Start timing
     auto start = std::chrono::high_resolution_clock::now();
@@ -36,6 +37,9 @@ void benchmark_matrix_matrix_multiplication(int iterations, int m, int k, int n)
         // Then assign to result
         Matrix<double, ORDT> result(mat1.nRows(), mat2.nCols());
         result = tmp;
+
+        if (iter == iterations - 1)
+            std::cout << result(0, 0) << std::endl;
     }
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -72,10 +76,10 @@ int main()
     benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(100, 200, 200, 200);
 
     // Benchmark large matrices (even fewer iterations)
-    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(100, 2000, 2000, 2000);
-    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(100, 2000, 2000, 2000);
-    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(100, 2000, 2000, 2000);
-    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(100, 2000, 2000, 2000);
+    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(10, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(10, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(10, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(10, 1000, 1000, 1000);
 
     return 0;
 }

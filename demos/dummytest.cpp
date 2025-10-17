@@ -21,7 +21,7 @@ int main()
     std::cout << "x= " << std::endl
               << x << std::endl;
 
-    bla::Vector<double> y(x.Flattened());
+    bla::Vector<double> y(x.Flatten());
 
     std::cout << "y= " << std::endl
               << y << std::endl;

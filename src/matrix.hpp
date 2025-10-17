@@ -13,7 +13,7 @@ namespace bla_ga
     ColMajor
   };
 
-  template <typename T, ORDERING ORD, typename TDIST = std::integral_constant<size_t, 1>>
+  template <typename T = double, ORDERING ORD = RowMajor, typename TDIST = std::integral_constant<size_t, 1>>
   class MatrixView : public MatExpr<MatrixView<T, ORD, TDIST>>
   {
   protected:
@@ -70,11 +70,6 @@ namespace bla_ga
       return data[Index(i, j)];
     }
 
-    VectorView<T, TDIST> Flattened() const
-    {
-      return VectorView<T, TDIST>(nrows * ncols, data);
-    }
-
     template <typename TB>
     MatrixView &operator+=(const MatExpr<TB> &m2)
     {
@@ -102,7 +97,7 @@ namespace bla_ga
     }
   };
 
-  template <typename T, ORDERING ORD>
+  template <typename T = double, ORDERING ORD = RowMajor>
   class Matrix : public MatrixView<T, ORD>
   {
     typedef MatrixView<T, ORD> BASE;
@@ -162,6 +157,15 @@ namespace bla_ga
       std::swap(data, m2.data);
       return *this;
     }
+
+    // To create transpose Just swap nrows and ncols
+    Matrix<T, ORD == RowMajor ? ColMajor : RowMajor> Transpose() const
+    {
+      return MatrixView<T, ORD == RowMajor ? ColMajor : RowMajor>(ncols, nrows, data);
+    }
+
+    // Create a functon Flatten that returns a vector
+    Vector<T> Flatten() const { return Vector<T>(nrows * ncols, data); }
   };
 
   template <typename... Args>

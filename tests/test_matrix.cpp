@@ -148,7 +148,7 @@ void test_matrix_scalar_multiplication()
             mat(i, j) = vali * T(i) + valj * T(j);
 
     // Multiply by scalar
-    auto result = mat * scalar;
+    auto result = scalar * mat;
 
     // Verify element-wise multiplication
     for (int i = 0; i < m; i++)
@@ -241,7 +241,7 @@ void test_matrix_flatten()
     {
         for (int j = 0; j < n; j++)
         {
-            size_t idx = (ORD == bla_ga::ColMajor) ? i * n + j : j * m + i;
+            size_t idx = (ORD == bla_ga::RowMajor) ? i * n + j : j * m + i;
             REQUIRE(flat(idx) == mat(i, j));
         }
     }
