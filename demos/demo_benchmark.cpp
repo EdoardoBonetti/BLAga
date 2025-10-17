@@ -71,5 +71,11 @@ int main()
     benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(100, 200, 200, 200);
     benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(100, 200, 200, 200);
 
+    // Benchmark large matrices (even fewer iterations)
+    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(100, 2000, 2000, 2000);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(100, 2000, 2000, 2000);
+    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(100, 2000, 2000, 2000);
+    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(100, 2000, 2000, 2000);
+
     return 0;
 }
