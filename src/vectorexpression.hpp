@@ -1,6 +1,11 @@
 #ifndef FILE_VEC_EXPRESSION
 #define FILE_VEC_EXPRESSION
 
+#include <complex>
+#include <cassert>
+#include <type_traits>
+#include <concepts>
+
 namespace bla_ga
 {
 
@@ -32,6 +37,58 @@ namespace bla_ga
     return SumVecExpr(a.Upcast(), b.Upcast());
   }
 
+  template <typename TA, typename TB>
+  class SubVecExpr : public VecExpr<SubVecExpr<TA, TB>>
+  {
+    TA a;
+    TB b;
+
+  public:
+    SubVecExpr(TA _a, TB _b) : a(_a), b(_b) {}
+
+    auto operator()(size_t i) const { return a(i) - b(i); }
+    size_t Size() const { return a.Size(); }
+  };
+
+  template <typename TA, typename TB>
+  auto operator-(const VecExpr<TA> &a, const VecExpr<TB> &b)
+  {
+    return SubVecExpr(a.Upcast(), b.Upcast());
+  }
+
+  template <typename TA>
+  class NegVecExpr : public VecExpr<NegVecExpr<TA>>
+  {
+    TA a;
+
+  public:
+    NegVecExpr(TA _a) : a(_a) {}
+
+    auto operator()(size_t i) const { return -a(i); }
+    size_t Size() const { return a.Size(); }
+  };
+
+  template <typename TA>
+  auto operator-(const VecExpr<TA> &a)
+  {
+    return NegVecExpr(-a.Upcast());
+  }
+
+  template <typename T>
+  struct is_scalar_type
+  {
+    static constexpr bool value = std::integral<T> || std::floating_point<T>;
+  };
+
+  template <typename T>
+  constexpr bool isScalar() { return is_scalar_type<T>::value; }
+
+  template <typename T>
+  struct is_scalar_type<std::complex<T>>
+  {
+    static constexpr bool value = isScalar<T>();
+  };
+
   template <typename TSCAL, typename TV>
   class ScaleVecExpr : public VecExpr<ScaleVecExpr<TSCAL, TV>>
   {
@@ -45,8 +102,9 @@ namespace bla_ga
     size_t Size() const { return vec.Size(); }
   };
 
-  template <typename T>
-  auto operator*(double scal, const VecExpr<T> &v)
+  template <typename TSCAL, typename T>
+    requires(isScalar<TSCAL>())
+  auto operator*(TSCAL scal, const VecExpr<T> &v)
   {
     return ScaleVecExpr(scal, v.Upcast());
   }

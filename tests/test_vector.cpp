@@ -305,7 +305,7 @@ void test_vector_vector_mult()
         sum += T(i) * S(10 * i); // cast loop variables to match scalar types
     }
 
-    U out = a * b;
+    U out = (a * b)(0);
 
     REQUIRE(out == sum);
 }

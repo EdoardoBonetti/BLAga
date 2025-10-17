@@ -74,6 +74,13 @@ namespace bla_ga
     Vector(size_t size)
         : VectorView<T>(size, new T[size]) { ; }
 
+    Vector(size_t size, const T *data)
+        : VectorView<T>(size, new T[size])
+    {
+      for (size_t i = 0; i < size; i++)
+        this->data[i] = data[i];
+    }
+
     Vector(const Vector &v)
         : Vector(v.Size())
     {
@@ -109,6 +116,15 @@ namespace bla_ga
       std::swap(size, v2.size);
       std::swap(data, v2.data);
       return *this;
+    }
+
+    // Operator ==
+    bool operator==(const Vector &v2) const
+    {
+      for (size_t i = 0; i < size; i++)
+        if (data[i] != v2(i))
+          return false;
+      return true;
     }
   };
 
