@@ -6,13 +6,16 @@ namespace bla = bla_ga;
 
 int main()
 {
-  size_t n = 10;
+  size_t n = 5;
   bla::Vector<double> x(n), y(n);
+
+  double mult = 0;
 
   for (size_t i = 0; i < x.Size(); i++)
   {
-    x(i) = i;
-    y(i) = 10;
+    x(i) = 1;
+    y(i) = i;
+    mult += x(i) * y(i);
   }
 
   bla::Vector<double> z = x + y;
@@ -25,8 +28,20 @@ int main()
 
   std::cout << "sizeof(x+3*y) = " << sizeof(x + 3 * y) << std::endl;
 
-  x.Range(2, 9) = 3;
-  x.Slice(1, 5) = 10;
+  std::cout << "x*y = " << x * y << std::endl;
+  std::cout << "x*y = " << x * y << std::endl;
 
-  std::cout << "x = " << x << std::endl;
+  std::cout << "mult = " << mult << std::endl;
+
+  bla::Vector<double> v(10);
+  for (size_t i = 0; i < v.Size(); i++)
+    v(i) = 10 * i;
+  std::cout << "v = " << v << std::endl;
+
+  v.Range(2, 9) = 3;
+  v.Slice(1, 5) = 10;
+
+  std::cout << "v = " << v << std::endl;
+  std::cout << "v.Range(2, 9) = " << v.Range(2, 9) << std::endl;
+  std::cout << "v.Slice(1, 5) = " << v.Slice(1, 5) << std::endl;
 }

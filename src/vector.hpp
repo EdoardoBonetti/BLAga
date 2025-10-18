@@ -3,11 +3,12 @@
 
 #include <iostream>
 
-#include "expression.hpp"
+#include "vectorexpression.hpp"
 
 namespace bla_ga
 {
 
+  /*------------VectorView------------*/
   template <typename T, typename TDIST = std::integral_constant<size_t, 1>>
   class VectorView : public VecExpr<VectorView<T, TDIST>>
   {
@@ -63,6 +64,7 @@ namespace bla_ga
     }
   };
 
+  /*------------Vector------------*/
   template <typename T>
   class Vector : public VectorView<T>
   {
@@ -73,6 +75,13 @@ namespace bla_ga
   public:
     Vector(size_t size)
         : VectorView<T>(size, new T[size]) { ; }
+
+    Vector(size_t size, const T *data)
+        : VectorView<T>(size, new T[size])
+    {
+      for (size_t i = 0; i < size; i++)
+        this->data[i] = data[i];
+    }
 
     Vector(const Vector &v)
         : Vector(v.Size())
@@ -110,8 +119,18 @@ namespace bla_ga
       std::swap(data, v2.data);
       return *this;
     }
+
+    // Operator ==
+    bool operator==(const Vector &v2) const
+    {
+      for (size_t i = 0; i < size; i++)
+        if (data[i] != v2(i))
+          return false;
+      return true;
+    }
   };
 
+  /*------------operator<<------------*/
   template <typename... Args>
   std::ostream &operator<<(std::ostream &ost, const VectorView<Args...> &v)
   {
