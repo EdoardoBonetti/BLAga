@@ -4,6 +4,7 @@
 # from bla import Vector
 
 # import from the installed package:
+#from BLAga.bla import Vector
 from BLAga.bla import Vector
 
 x = Vector(3)
