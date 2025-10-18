@@ -111,7 +111,10 @@ namespace bla_ga
   protected:
     constexpr size_t Index(size_t i, size_t j) const noexcept
     {
-      return data->Index(i, j);
+      if constexpr (ORD == RowMajor)
+        return i * dist + j;
+      else
+        return j * dist + i;
     }
 
   public:

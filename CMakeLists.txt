@@ -7,7 +7,7 @@ include_directories(src)
 
 add_subdirectory(cpp_demos)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -lm")
 
 # ---- Try to find system Catch2 ----
 find_package(Catch2 3 QUIET)
