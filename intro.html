@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/neonpunk.css?v=1302bdc3" />
@@ -59,7 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
-    <script src="_static/copy-logo.js?v=bc12a479"></script>
+    <script src="_static/copy-logo.js?v=798398a5"></script>
     <script src="_static/other.js?v=8bd6b487"></script>
     <script src="_static/costum.js?v=0d24bc44"></script>
     <script src="_static/cursor-effect.js?v=8389873e"></script>
@@ -368,15 +368,28 @@ The library provides template classes <strong>Vector</strong> and <strong>Matrix
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>install it via git-clone:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/EdoardoBonetti/BLAga
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git clone --branch BLAga-Pybind https://github.com/EdoardoBonetti/BLAga
 </pre></div>
 </div>
-<p>To configure and build some tests do</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cd bla_ga
-mkdir build
-cd build
-cmake ..
-make
+<p>This branch of the repository contains the python bindings for BLAga</p>
+<p>To install the python bindings run:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 -m pip install .  
+</pre></div>
+</div>
+<p>or, if you want to see more verbose output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 -m pip install . -v   
+</pre></div>
+</div>
+<p>In case you want to edit the python bindings, run</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 -m pip install -e . 
+</pre></div>
+</div>
+<p>Or if you want to run tests</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 -m pip install -e .[test]
+</pre></div>
+</div>
+<p>You can combine the stuff</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 -m pip install -e . -v   
 </pre></div>
 </div>
 </section>

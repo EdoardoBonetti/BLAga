@@ -20,7 +20,7 @@
     img.style.transform = "translate(-50%, -50%) scale(1) rotate(0deg)";
     img.style.transition = "transform 3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 3s ease-out";
     img.style.zIndex = "99999";
-    img.style.filter = "drop-shadow(0 0 10px #0ff) drop-shadow(0 0 20px #f0f)";
+    img.style.filter = "drop-shadow(0 0 10px rgba(49, 196, 196, 1)) drop-shadow(0 0 20px #f0f)";
 
     document.body.appendChild(img);
 
