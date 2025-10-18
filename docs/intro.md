@@ -8,16 +8,30 @@ The library provides template classes **Vector** and **Matrix**
 
 install it via git-clone:
 
-    git clone https://github.com/EdoardoBonetti/BLAga
+    git clone --branch BLAga-Pybind https://github.com/EdoardoBonetti/BLAga
 
+This branch of the repository contains the python bindings for BLAga
 
-To configure and build some tests do
+To install the python bindings run:
 
-    cd bla_ga
-    mkdir build
-    cd build
-    cmake ..
-    make
+    python3 -m pip install .  
+
+or, if you want to see more verbose output
+
+    python3 -m pip install . -v   
+
+In case you want to edit the python bindings, run
+
+    python3 -m pip install -e . 
+
+Or if you want to run tests 
+
+    python3 -m pip install -e .[test]
+
+You can combine the stuff
+
+    python3 -m pip install -e . -v   
+
     
 
 ## Using BLAga
