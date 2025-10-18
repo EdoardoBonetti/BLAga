@@ -3,8 +3,8 @@
 # sys.path.append('/Users/joachim/texjs/lva/ws2324/ScientificComputing/ASC-bla/build')
 # from bla import Vector
 
-# import from the installed ASCsoft package:
-from ASCsoft.bla import Vector
+# import from the installed package:
+from BLAga.bla import Vector
 
 x = Vector(3)
 y = Vector(3)

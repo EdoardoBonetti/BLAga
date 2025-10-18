@@ -1,4 +1,4 @@
-# ASC-bla
+# BLAga
 A simple basic linear algebra implementation using modern C++.
 
 

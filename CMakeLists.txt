@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
-project(ASC_bla)
+project(BLAga)
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 include_directories(src)
 
@@ -20,7 +20,7 @@ add_subdirectory (demos)
 
 pybind11_add_module(bla src/bind_bla.cpp)
 
-install (TARGETS bla DESTINATION ASCsoft)
-install (FILES src/vector.hpp DESTINATION ASCsoft/include)
+install (TARGETS bla DESTINATION BLAga)
+install (FILES src/vector.hpp DESTINATION BLAga/include)
 
 

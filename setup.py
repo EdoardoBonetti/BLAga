@@ -8,10 +8,10 @@ if 'win32' in sys.platform:
 
     
 setup(
-    name="ASCsoft",
+    name="BLAga",
     version="0.0.2",
-    author="J. Schoeberl",
+    author="E. Bonetti",
     license="MIT",
-    packages=["ASCsoft"],
+    packages=["BLAga"],
     cmake_args=_cmake_args
 )
