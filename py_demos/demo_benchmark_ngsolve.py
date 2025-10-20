@@ -1,18 +1,19 @@
 import numpy as np
 import time
+from ngsolve import Matrix, TaskManager ,SetNumThreads
 
-def benchmark_matrix_matrix_multiplication(iterations, m, k, n, order_a='C', order_b='C'):
+def benchmark_matrix_matrix_multiplication(iterations, m, k, n, order_a='F', order_b='C'):
     vali = 2.0
     valj = 1.0
 
     # First matrix (m x k)
-    mat1 = np.empty((m, k), order=order_a)
+    mat1 = Matrix(m,k)
     for i in range(m):
         for j in range(k):
             mat1[i, j] = vali * i + valj * j
 
     # Second matrix (k x n)
-    mat2 = np.empty((k, n), order=order_b)
+    mat2 = Matrix(k, n)
     for i in range(k):
         for j in range(n):
             mat2[i, j] = 1.0 + 1.0 / (vali * i + valj * j + 3.2)
@@ -22,13 +23,13 @@ def benchmark_matrix_matrix_multiplication(iterations, m, k, n, order_a='C', ord
 
     for iter in range(iterations):
         # Force evaluation
-        tmp = mat1 @ mat2  # matrix multiplication
+        tmp = mat1 * mat2  # matrix multiplication
 
         # Assign to result
-        result = tmp.copy()
+        
 
         if iter == iterations - 1:
-            print(result[0, 0])
+            print(tmp[0, 0])
 
     end = time.perf_counter()
     elapsed = end - start
@@ -40,17 +41,20 @@ def benchmark_matrix_matrix_multiplication(iterations, m, k, n, order_a='C', ord
 
 
 if __name__ == "__main__":
-    # Small matrices
-    benchmark_matrix_matrix_multiplication(1000, 5, 4, 6)
+   SetNumThreads(4)  # or any number of physical cores
+
+   with TaskManager():
+        # Small matrices
+        benchmark_matrix_matrix_multiplication(1000, 5, 4, 6)
 
 
-    # Medium matrices
-    benchmark_matrix_matrix_multiplication(500, 50, 50, 50)
+        # Medium matrices
+        benchmark_matrix_matrix_multiplication(500, 50, 50, 50)
 
-    # Large matrices
-    benchmark_matrix_matrix_multiplication(100, 200, 200, 200)
+        # Large matrices
+        benchmark_matrix_matrix_multiplication(100, 200, 200, 200)
 
 
-    # Very large matrices
-    benchmark_matrix_matrix_multiplication(10, 1000, 1000, 1000)
+        # Very large matrices
+        benchmark_matrix_matrix_multiplication(10, 1000, 1000, 1000)
 
