@@ -1,0 +1,17 @@
+This to do is just an easy way to get the timings during the evolution of the project.
+
+for now we have a simple matrix matrix multiplication, no optimization but we compile it with -lm -O3 it does :
+
+    importing BLAga
+    6.796172426607209
+    Matrix multiplication (ColMajor x ColMajor), size: 5x4 * 4x6, iterations: 1000, elapsed time: 0.000699 s, avg per multiplication: 0.000001 s
+
+    1246.9537975998326
+    Matrix multiplication (ColMajor x ColMajor), size: 50x50 * 50x50, iterations: 500, elapsed time: 0.031223 s, avg per multiplication: 0.000062 s
+
+    19995.857795300562
+    Matrix multiplication (ColMajor x ColMajor), size: 200x200 * 200x200, iterations: 100, elapsed time: 0.615166 s, avg per multiplication: 0.006152 s
+
+    499994.57375419006
+    Matrix multiplication (ColMajor x ColMajor), size: 1000x1000 * 1000x1000, iterations: 10, elapsed time: 11.580390 s, avg per multiplication: 1.158039 s
+
