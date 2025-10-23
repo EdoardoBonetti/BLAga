@@ -131,7 +131,8 @@ namespace bla_ga
       using B = std::invoke_result<TB, size_t>::type;
       using U = decltype(std::declval<A>() * std::declval<B>());
       U sum = U(0);
-      for (size_t k = 0; k < a.Size(); k++)
+      size_t len = a.Size();
+      for (size_t k = 0; k < len; k++)
         sum += a(k) * b(k);
       return sum;
     }
