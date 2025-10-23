@@ -51,12 +51,19 @@ namespace bla_ga
     template <typename TB>
     MatrixView &operator=(const MatExpr<TB> &m2)
     {
-      for (size_t i = 0; i < nrows; i++)
+      if constexpr (requires { m2.Upcast().Eval(*this); })
+      {
+        m2.Upcast().Eval(*this);
+      }
+      else
+      {
         for (size_t j = 0; j < ncols; j++)
-          data[Index(i, j)] = m2(i, j);
+          for (size_t i = 0; i < nrows; i++)
+
+            data[Index(i, j)] = m2(i, j);
+      }
       return *this;
     }
-
     T *Data() const { return data; }
     size_t nCols() const { return ncols; }
     size_t nRows() const { return nrows; }
@@ -74,8 +81,8 @@ namespace bla_ga
     template <typename TB>
     MatrixView &operator+=(const MatExpr<TB> &m2)
     {
-      for (size_t i = 0; i < nrows; i++)
-        for (size_t j = 0; j < ncols; j++)
+      for (size_t j = 0; j < ncols; j++)
+        for (size_t i = 0; i < nrows; i++)
           (*this)(i, j) += m2(i, j);
       return *this;
     }
@@ -83,16 +90,16 @@ namespace bla_ga
     template <typename TB>
     MatrixView &operator-=(const MatExpr<TB> &m2)
     {
-      for (size_t i = 0; i < nrows; i++)
-        for (size_t j = 0; j < ncols; j++)
+      for (size_t j = 0; j < ncols; j++)
+        for (size_t i = 0; i < nrows; i++)
           (*this)(i, j) -= m2(i, j);
       return *this;
     }
 
     MatrixView &operator*=(T scal)
     {
-      for (size_t i = 0; i < nrows; i++)
-        for (size_t j = 0; j < ncols; j++)
+      for (size_t j = 0; j < ncols; j++)
+        for (size_t i = 0; i < nrows; i++)
           (*this)(i, j) *= scal;
       return *this;
     }
@@ -149,8 +156,8 @@ namespace bla_ga
     {
 
       size_t dist = nrows;
-      for (size_t i = 0; i < nrows; i++)
-        for (size_t j = 0; j < ncols; j++)
+      for (size_t j = 0; j < ncols; j++)
+        for (size_t i = 0; i < nrows; i++)
           data[Index(i, j)] = m2(i, j);
       return *this;
     }
@@ -171,6 +178,23 @@ namespace bla_ga
 
     // Create a functon Flatten that returns a vector
     Vector<T> Flatten() const { return Vector<T>(nrows * ncols, data); }
+
+    // Create Row(i) and Col(j) functions
+    VectorView<T> Row(size_t i) const
+    {
+      if constexpr (ORD == RowMajor)
+        return VectorView<T>(ncols, data + i * ncols);
+      else
+        return VectorView<T>(nrows, data + i);
+    }
+
+    VectorView<T> Col(size_t j) const
+    {
+      if constexpr (ORD == RowMajor)
+        return VectorView<T>(nrows, ncols, data + j);
+      else
+        return VectorView<T>(ncols, data + j * nrows);
+    }
   };
 
   /*------------operator<<------------*/
