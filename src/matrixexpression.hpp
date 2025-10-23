@@ -7,6 +7,7 @@ Author: Edoardo Bonetti
 
 #include "vector.hpp"
 #include "simd.h"
+// #include <omp.h>
 
 namespace bla_ga
 {
@@ -130,21 +131,99 @@ namespace bla_ga
     //        }
     //    }
 
+    /*
+
     template <typename MatType>
     void Eval(MatType &C) const
     {
+
       const size_t BS = 64; // block size
       size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
-
+      // #pragma omp parallel for collapse(2) schedule(static)
       for (size_t ii = 0; ii < M; ii += BS)
         for (size_t kk = 0; kk < K; kk += BS)
           for (size_t jj = 0; jj < N; jj += BS)
+
             for (size_t i = ii; i < std::min(ii + BS, M); ++i)
               for (size_t k = kk; k < std::min(kk + BS, K); ++k)
               {
                 auto aik = a(i, k);
                 for (size_t j = jj; j < std::min(jj + BS, N); ++j)
                   C(i, j) += aik * b(k, j);
+              }
+    }*/
+
+    //    template <typename MatType>
+    //    void Eval(MatType &C) const
+    //    {
+    //      const size_t BS = 64; // block size
+    //      using U = decltype(a(0, 0) * b(0, 0));
+    //
+    //      std::array<U, BS> cloc;
+    //
+    //      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
+    //      // #pragma omp parallel for collapse(2) schedule(static)
+    //      for (size_t ii = 0; ii < M; ii += BS)
+    //        for (size_t kk = 0; kk < K; kk += BS)
+    //          for (size_t jj = 0; jj < N; jj += BS)
+    //
+    //            for (size_t i = ii; i < std::min(ii + BS, M); ++i)
+    //            {
+    //              for (size_t j = 0; j < BS; ++j)
+    //              {
+    //                cloc[j] = 0;
+    //              }
+    //              for (size_t k = kk; k < std::min(kk + BS, K); ++k)
+    //              {
+    //                auto aik = a(i, k);
+    //                for (size_t j = jj; j < std::min(jj + BS, N); ++j)
+    //                  // C(i, j) += aik * b(k, j);
+    //                  cloc[j - jj] += aik * b(k, j);
+    //              }
+    //
+    //              for (size_t j = jj; j < std::min(jj + BS, N); ++j)
+    //                C(i, j) += cloc[j - jj];
+    //            }
+    //    }
+
+    template <typename MatType>
+    void Eval(MatType &C) const
+    {
+
+      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
+
+      // if N is smaller than the block size, direct triple loop
+      if (N < 64)
+      {
+        for (size_t i = 0; i < M; ++i)
+          for (size_t k = 0; k < K; ++k)
+          {
+            auto aik = a(i, k);
+            for (size_t j = 0; j < N; ++j)
+              C(i, j) += aik * b(k, j);
+          }
+        return;
+      }
+
+      const size_t BS = 2 * 64; // L1-friendly block size
+      const size_t RS = 8;      // Register tile size
+
+      for (size_t ii = 0; ii < M; ii += BS)
+        for (size_t kk = 0; kk < K; kk += BS)
+          for (size_t jj = 0; jj < N; jj += BS)
+            // #pragma omp parallel for collapse(2) schedule(static)
+            for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
+              for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
+              {
+                double cloc[RS][RS] = {0}; // register tile
+                for (size_t k = kk; k < std::min(kk + BS, K); ++k)
+                  for (size_t ii2 = 0; ii2 < RS; ++ii2)
+                    for (size_t jj2 = 0; jj2 < RS; ++jj2)
+                      cloc[ii2][jj2] += a(i + ii2, k) * b(k, j + jj2);
+                // store back to C
+                for (size_t ii2 = 0; ii2 < RS; ++ii2)
+                  for (size_t jj2 = 0; jj2 < RS; ++jj2)
+                    C(i + ii2, j + jj2) += cloc[ii2][jj2];
               }
     }
   };

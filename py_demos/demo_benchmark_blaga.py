@@ -33,25 +33,22 @@ def benchmark_matrix_matrix_multiplication(iterations, m, k, n):
     end = time.perf_counter()
     elapsed = end - start
 
-    print(f"Matrix multiplication ({'ColMajor' } x "
-          f"{'ColMajor' }), size: {m}x{k} * {k}x{n}, "
+    print(f"Matrix multiplication , size: {m}x{k} * {k}x{n}, "
           f"iterations: {iterations}, elapsed time: {elapsed:.6f} s, "
           f"avg per multiplication: {elapsed / iterations:.6f} s\n")
 
 
 if __name__ == "__main__":
     # Small matrices
-    benchmark_matrix_matrix_multiplication(1000, 5, 4, 6)
-
+    benchmark_matrix_matrix_multiplication(1000, 10,10,10)
 
     # Medium matrices
     benchmark_matrix_matrix_multiplication(500, 50, 50, 50)
 
-
     # Large matrices
     benchmark_matrix_matrix_multiplication(100, 200, 200, 200)
 
-
     # Very large matrices
-    benchmark_matrix_matrix_multiplication(10, 1024, 1024, 1024)
+    benchmark_matrix_matrix_multiplication(1, 3000, 3000, 3000)
+
 

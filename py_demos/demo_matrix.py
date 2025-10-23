@@ -8,7 +8,7 @@
 from BLAga.bla import Matrix
 import numpy as np
 
-n = 10
+n = 103
 
 x = Matrix(n, n)
 y = Matrix(n, n)

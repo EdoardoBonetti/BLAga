@@ -39,10 +39,10 @@ def benchmark_matrix_matrix_multiplication(iterations, m, k, n, order_a='C', ord
           f"avg per multiplication: {elapsed / iterations:.6f} s\n")
 
 
+
 if __name__ == "__main__":
     # Small matrices
-    benchmark_matrix_matrix_multiplication(1000, 5, 4, 6)
-
+    benchmark_matrix_matrix_multiplication(1000, 10,10,10)
 
     # Medium matrices
     benchmark_matrix_matrix_multiplication(500, 50, 50, 50)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     # Large matrices
     benchmark_matrix_matrix_multiplication(100, 200, 200, 200)
 
-
     # Very large matrices
-    benchmark_matrix_matrix_multiplication(10, 1000, 1000, 1000)
+    benchmark_matrix_matrix_multiplication(5, 2000, 2000, 2000)
+
 

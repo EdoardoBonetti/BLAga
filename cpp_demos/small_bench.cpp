@@ -18,7 +18,7 @@ int main()
         for (int j = 0; j < N; j++)
         {
             A(i, j) = 1;
-            B(i, j) = 2;
+            B(i, j) = 1;
         }
 
     auto start = std::chrono::high_resolution_clock::now();
