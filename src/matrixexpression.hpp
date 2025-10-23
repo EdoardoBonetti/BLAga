@@ -6,6 +6,7 @@ Author: Edoardo Bonetti
 #define FILE_MAT_EXPRESSION
 
 #include "vector.hpp"
+#include "simd.h"
 
 namespace bla_ga
 {
@@ -74,21 +75,78 @@ namespace bla_ga
 
     auto operator()(size_t i, size_t j) const
     {
-      // using A = std::invoke_result<TA, size_t>::type;
-      // using B = std::invoke_result<TB, size_t>::type;
-      //  using U = decltype(std::declval<A>() * std::declval<B>());
-
       using U = decltype(a(0, 0) * b(0, 0));
 
-      U sum = U(0);
+      U sum0 = U(0);
+      U sum1 = U(0);
+      U sum2 = U(0);
+      U sum3 = U(0);
 
-      for (size_t k = 0; k < a.nCols(); k++)
-        sum += a(i, k) * b(k, j);
+      size_t n = a.nCols();
+      size_t unrolled_end = n - n % 4; // last index for unrolled loop
+
+      // Main unrolled loop
+      for (size_t k = 0; k < unrolled_end; k += 4)
+      {
+        // make TileMatExpr
+        sum0 += a(i, k) * b(k, j);
+        sum1 += a(i, k + 1) * b(k + 1, j);
+        sum2 += a(i, k + 2) * b(k + 2, j);
+        sum3 += a(i, k + 3) * b(k + 3, j);
+      }
+
+      // Remainder loop for leftover elements
+      for (size_t k = unrolled_end; k < n; k++)
+      {
+        sum0 += a(i, k) * b(k, j);
+      }
+
+      U sum = sum0 + sum1 + sum2 + sum3;
       return sum;
     }
 
     size_t nRows() const { return a.nRows(); }
     size_t nCols() const { return b.nCols(); }
+
+    //    template <typename MatType>
+    //    void Eval(MatType &C) const
+    //    {
+    //      size_t M = a.nRows();
+    //      size_t N = b.nCols();
+    //      size_t K = a.nCols();
+    //
+    //      // Initialize C to zero
+    //      for (size_t i = 0; i < M; ++i)
+    //        for (size_t j = 0; j < N; ++j)
+    //          C(i, j) = 0;
+    //
+    //      // Loop reordering for better cache performance
+    //      for (size_t i = 0; i < M; ++i)
+    //        for (size_t k = 0; k < K; ++k)
+    //        {
+    //          auto aik = a(i, k);
+    //          for (size_t j = 0; j < N; ++j)
+    //            C(i, j) += aik * b(k, j);
+    //        }
+    //    }
+
+    template <typename MatType>
+    void Eval(MatType &C) const
+    {
+      const size_t BS = 64; // block size
+      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
+
+      for (size_t ii = 0; ii < M; ii += BS)
+        for (size_t kk = 0; kk < K; kk += BS)
+          for (size_t jj = 0; jj < N; jj += BS)
+            for (size_t i = ii; i < std::min(ii + BS, M); ++i)
+              for (size_t k = kk; k < std::min(kk + BS, K); ++k)
+              {
+                auto aik = a(i, k);
+                for (size_t j = jj; j < std::min(jj + BS, N); ++j)
+                  C(i, j) += aik * b(k, j);
+              }
+    }
   };
 
   template <typename TA, typename TB>
