@@ -58,28 +58,28 @@ int main()
 {
 
     // Benchmark small matrices (more iterations)
-    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(1000, 5, 4, 6);
-    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(1000, 5, 4, 6);
-    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(1000, 5, 4, 6);
-    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(1000, 5, 4, 6);
+    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(100, 5, 4, 6);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(100, 5, 4, 6);
+    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(100, 5, 4, 6);
+    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(100, 5, 4, 6);
 
     // Benchmark medium matrices (fewer iterations)
-    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(500, 50, 50, 50);
-    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(500, 50, 50, 50);
-    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(500, 50, 50, 50);
-    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(500, 50, 50, 50);
+    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(50, 50, 50, 50);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(50, 50, 50, 50);
+    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(50, 50, 50, 50);
+    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(50, 50, 50, 50);
 
     // Benchmark large matrices (even fewer iterations)
-    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(100, 200, 200, 200);
-    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(100, 200, 200, 200);
-    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(100, 200, 200, 200);
-    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(100, 200, 200, 200);
+    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(10, 200, 200, 200);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(10, 200, 200, 200);
+    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(10, 200, 200, 200);
+    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(10, 200, 200, 200);
 
     // Benchmark large matrices (even fewer iterations)
-    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(10, 1000, 1000, 1000);
-    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(10, 1000, 1000, 1000);
-    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(10, 1000, 1000, 1000);
-    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(10, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(1, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(1, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(1, 1000, 1000, 1000);
+    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(1, 1000, 1000, 1000);
 
     return 0;
 }

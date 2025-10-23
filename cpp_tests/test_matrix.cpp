@@ -319,3 +319,32 @@ void test_default_templates()
     REQUIRE(vec2 == vec3);
     REQUIRE(vec3 == vec1);
 }
+
+// Now create a test for the Row and Col funciotns of the matrix
+
+template <typename T, ORDERING ORD>
+void test_row()
+{
+    // crate a matrix of size 10 x 10
+    Matrix<T, ORD> mat(10, 10);
+    for (int i = 0; i < 10; i++)
+        for (int j = 0; j < 10; j++)
+        {
+            mat(i, j) = T(i) + 10.0 * T(j);
+        }
+
+    // check if the row is correct
+    Vector<T> row = mat.Row(5);
+    for (int i = 0; i < 10; i++)
+        REQUIRE(row(i) == T(i) + 10.0 * T(5));
+}
+
+TEST_CASE("test_matrix_row", "[matrix]")
+{
+    // SECTION("int ColMajor") { test_row<int, bla_ga::ColMajor>(); }
+    // SECTION("int RowMajor") { test_row<int, bla_ga::RowMajor>(); }
+    // SECTION("double ColMajor") { test_row<double, bla_ga::ColMajor>(); }
+    // SECTION("double RowMajor") { test_row<double, bla_ga::RowMajor>(); }
+    // SECTION("complex ColMajor") { test_row<std::complex<double>, bla_ga::ColMajor>(); }
+    // SECTION("complex RowMajor") { test_row<std::complex<double>, bla_ga::RowMajor>(); }
+}

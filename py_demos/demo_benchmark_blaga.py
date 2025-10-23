@@ -9,13 +9,13 @@ def benchmark_matrix_matrix_multiplication(iterations, m, k, n):
     mat1 = Matrix(m, k)
     for i in range(m):
         for j in range(k):
-            mat1[i, j] = vali * i + valj * j
+            mat1[i, j] = 1/(1+j)
 
     # Second matrix (k x n)
     mat2 = Matrix(k, n)
     for i in range(k):
         for j in range(n):
-            mat2[i, j] = 1.0 + 1.0 / (vali * i + valj * j + 3.2)
+            mat2[i, j] = 1.0
 
     # Start timing
     start = time.perf_counter()
@@ -53,5 +53,5 @@ if __name__ == "__main__":
 
 
     # Very large matrices
-    benchmark_matrix_matrix_multiplication(10, 1000, 1000, 1000)
+    benchmark_matrix_matrix_multiplication(10, 1024, 1024, 1024)
 
