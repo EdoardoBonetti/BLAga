@@ -7,10 +7,17 @@ Author: Edoardo Bonetti
 
 #include "vector.hpp"
 #include "simd.h"
-// #include <omp.h>
+#include <algorithm>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 namespace bla_ga
 {
+
+  // create a prename for MatrixView
+  // Bring them into local scope
+
   /*------------MatExpr------------*/
   template <typename T>
   class MatExpr
@@ -77,152 +84,102 @@ namespace bla_ga
     auto operator()(size_t i, size_t j) const
     {
       using U = decltype(a(0, 0) * b(0, 0));
-
-      U sum0 = U(0);
-      U sum1 = U(0);
-      U sum2 = U(0);
-      U sum3 = U(0);
-
       size_t n = a.nCols();
-      size_t unrolled_end = n - n % 4; // last index for unrolled loop
-
-      // Main unrolled loop
-      for (size_t k = 0; k < unrolled_end; k += 4)
+      U sum0 = 0;
+      U sum1 = 0;
+      size_t k = 0;
+      for (; k + 2 <= n; k += 2)
       {
-        // make TileMatExpr
         sum0 += a(i, k) * b(k, j);
         sum1 += a(i, k + 1) * b(k + 1, j);
-        sum2 += a(i, k + 2) * b(k + 2, j);
-        sum3 += a(i, k + 3) * b(k + 3, j);
       }
-
-      // Remainder loop for leftover elements
-      for (size_t k = unrolled_end; k < n; k++)
-      {
+      // take care of the leftover
+      if (k < n)
         sum0 += a(i, k) * b(k, j);
-      }
 
-      U sum = sum0 + sum1 + sum2 + sum3;
-      return sum;
+      return sum0 + sum1;
     }
 
-    size_t nRows() const { return a.nRows(); }
+    size_t
+    nRows() const
+    {
+      return a.nRows();
+    }
     size_t nCols() const { return b.nCols(); }
 
-    //    template <typename MatType>
-    //    void Eval(MatType &C) const
-    //    {
-    //      size_t M = a.nRows();
-    //      size_t N = b.nCols();
-    //      size_t K = a.nCols();
-    //
-    //      // Initialize C to zero
-    //      for (size_t i = 0; i < M; ++i)
-    //        for (size_t j = 0; j < N; ++j)
-    //          C(i, j) = 0;
-    //
-    //      // Loop reordering for better cache performance
-    //      for (size_t i = 0; i < M; ++i)
-    //        for (size_t k = 0; k < K; ++k)
-    //        {
-    //          auto aik = a(i, k);
-    //          for (size_t j = 0; j < N; ++j)
-    //            C(i, j) += aik * b(k, j);
-    //        }
-    //    }
+    // Best so far:
 
-    /*
-
-    template <typename MatType>
-    void Eval(MatType &C) const
+    template <typename MatType> // does inline help?
+    inline void Eval(MatType &C) const
     {
+      std::cout << "Using simple Eval" << std::endl;
 
-      const size_t BS = 64; // block size
-      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
-      // #pragma omp parallel for collapse(2) schedule(static)
-      for (size_t ii = 0; ii < M; ii += BS)
-        for (size_t kk = 0; kk < K; kk += BS)
-          for (size_t jj = 0; jj < N; jj += BS)
-
-            for (size_t i = ii; i < std::min(ii + BS, M); ++i)
-              for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-              {
-                auto aik = a(i, k);
-                for (size_t j = jj; j < std::min(jj + BS, N); ++j)
-                  C(i, j) += aik * b(k, j);
-              }
-    }*/
-
-    //    template <typename MatType>
-    //    void Eval(MatType &C) const
-    //    {
-    //      const size_t BS = 64; // block size
-    //      using U = decltype(a(0, 0) * b(0, 0));
-    //
-    //      std::array<U, BS> cloc;
-    //
-    //      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
-    //      // #pragma omp parallel for collapse(2) schedule(static)
-    //      for (size_t ii = 0; ii < M; ii += BS)
-    //        for (size_t kk = 0; kk < K; kk += BS)
-    //          for (size_t jj = 0; jj < N; jj += BS)
-    //
-    //            for (size_t i = ii; i < std::min(ii + BS, M); ++i)
-    //            {
-    //              for (size_t j = 0; j < BS; ++j)
-    //              {
-    //                cloc[j] = 0;
-    //              }
-    //              for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-    //              {
-    //                auto aik = a(i, k);
-    //                for (size_t j = jj; j < std::min(jj + BS, N); ++j)
-    //                  // C(i, j) += aik * b(k, j);
-    //                  cloc[j - jj] += aik * b(k, j);
-    //              }
-    //
-    //              for (size_t j = jj; j < std::min(jj + BS, N); ++j)
-    //                C(i, j) += cloc[j - jj];
-    //            }
-    //    }
-
-    template <typename MatType>
-    void Eval(MatType &C) const
-    {
+      // PRINT THE TYPE OF decltype(TA{} * TB{})
+      std::cout << "Type of matrix multiplication elements: " << typeid(decltype(a(0, 0) * b(0, 0))).name() << std::endl;
 
       size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
 
-      // if N is smaller than the block size, direct triple loop
-      if (N < 64)
-      {
-        for (size_t i = 0; i < M; ++i)
-          for (size_t k = 0; k < K; ++k)
-          {
-            auto aik = a(i, k);
-            for (size_t j = 0; j < N; ++j)
-              C(i, j) += aik * b(k, j);
-          }
-        return;
-      }
-
-      const size_t BS = 2 * 64; // L1-friendly block size
-      const size_t RS = 8;      // Register tile size
+      constexpr size_t BS = 256;
+      constexpr size_t RS = 4;
 
       for (size_t ii = 0; ii < M; ii += BS)
         for (size_t kk = 0; kk < K; kk += BS)
           for (size_t jj = 0; jj < N; jj += BS)
-            // #pragma omp parallel for collapse(2) schedule(static)
             for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
               for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
               {
-                double cloc[RS][RS] = {0}; // register tile
+                double cloc[RS][RS] = {0.0};
+
+                size_t tileM = std::min(RS, M - i);
+                size_t tileN = std::min(RS, N - j);
+
+                // accumulate into cloc
                 for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-                  for (size_t ii2 = 0; ii2 < RS; ++ii2)
-                    for (size_t jj2 = 0; jj2 < RS; ++jj2)
+                  for (size_t ii2 = 0; ii2 < tileM; ++ii2)
+                    for (size_t jj2 = 0; jj2 < tileN; ++jj2)
                       cloc[ii2][jj2] += a(i + ii2, k) * b(k, j + jj2);
-                // store back to C
-                for (size_t ii2 = 0; ii2 < RS; ++ii2)
-                  for (size_t jj2 = 0; jj2 < RS; ++jj2)
+
+                // store back to C once
+                for (size_t ii2 = 0; ii2 < tileM; ++ii2)
+                  for (size_t jj2 = 0; jj2 < tileN; ++jj2)
+                    C(i + ii2, j + jj2) += cloc[ii2][jj2];
+              }
+    }
+
+    template <typename MatType>
+      requires std::is_same_v<decltype(a(0, 0) * b(0, 0)), double>
+    inline void EvalSIMD(MatType &C) const
+    {
+      std::cout << "Using simple SIMD Eval" << std::endl;
+
+      // PRINT THE TYPE OF decltype(TA{} * TB{})
+      std::cout << "Type of matrix multiplication elements: " << typeid(decltype(a(0, 0) * b(0, 0))).name() << std::endl;
+
+      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
+
+      constexpr size_t BS = 128;
+      constexpr size_t RS = 4;
+
+      for (size_t ii = 0; ii < M; ii += BS)
+        for (size_t kk = 0; kk < K; kk += BS)
+          for (size_t jj = 0; jj < N; jj += BS)
+            for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
+              for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
+              {
+                double cloc[RS][RS] = {0.0};
+
+                size_t tileM = std::min(RS, M - i);
+                size_t tileN = std::min(RS, N - j);
+
+                // accumulate into cloc
+                for (size_t k = kk; k < std::min(kk + BS, K); ++k)
+                  for (size_t ii2 = 0; ii2 < tileM; ++ii2)
+                    for (size_t jj2 = 0; jj2 < tileN; ++jj2)
+                      cloc[ii2][jj2] += a(i + ii2, k) * b(k, j + jj2);
+
+                // store back to C once
+                for (size_t ii2 = 0; ii2 < tileM; ++ii2)
+                  for (size_t jj2 = 0; jj2 < tileN; ++jj2)
                     C(i + ii2, j + jj2) += cloc[ii2][jj2];
               }
     }

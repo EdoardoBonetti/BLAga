@@ -2,7 +2,6 @@
 #define FILE_MATRIX
 
 #include <iostream>
-
 #include "matrixexpression.hpp"
 
 namespace bla_ga
@@ -12,7 +11,6 @@ namespace bla_ga
     RowMajor,
     ColMajor
   };
-
   /*------------MatrixView------------*/
   template <typename T = double, ORDERING ORD = RowMajor, typename TDIST = std::integral_constant<size_t, 1>>
   class MatrixView : public MatExpr<MatrixView<T, ORD, TDIST>>
@@ -51,10 +49,10 @@ namespace bla_ga
     template <typename TB>
     MatrixView &operator=(const MatExpr<TB> &m2)
     {
-      if constexpr (requires { m2.Upcast().Eval(*this); })
-      {
+      if constexpr (requires { m2.Upcast().EvalSIMD(*this); })
+        m2.Upcast().EvalSIMD(*this);
+      else if constexpr (requires { m2.Upcast().Eval(*this); })
         m2.Upcast().Eval(*this);
-      }
       else
       {
         for (size_t j = 0; j < ncols; j++)
@@ -98,8 +96,8 @@ namespace bla_ga
 
     MatrixView &operator*=(T scal)
     {
-      for (size_t j = 0; j < ncols; j++)
-        for (size_t i = 0; i < nrows; i++)
+      for (size_t i = 0; i < nrows; i++)
+        for (size_t j = 0; j < ncols; j++)
           (*this)(i, j) *= scal;
       return *this;
     }
@@ -214,6 +212,6 @@ namespace bla_ga
     return ost;
   }
 
-} // namespace ASC_bla
+} // namespace bla_ga
 
 #endif

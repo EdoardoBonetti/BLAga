@@ -11,7 +11,7 @@
   https://developer.arm.com/documentation/102159/0400
 */
 
-namespace ASC_HPC
+namespace bla_ga
 {
 
   template <>
@@ -24,7 +24,8 @@ namespace ASC_HPC
     SIMD(SIMD<mask64, 1> v0, SIMD<mask64, 1> v1) : val{v0.Val(), v1.Val()} {}
 
     auto Val() const { return val; }
-    mask64 operator[](size_t i) const { return ((int64_t *)&val)[0] != 0; }
+    mask64 &operator[](size_t i) { return *((mask64 *)&val + i); }          // non-const
+    mask64 operator[](size_t i) const { return ((int64_t *)&val)[i] != 0; } // const
 
     SIMD<mask64, 1> Lo() const { return SIMD<mask64, 1>(val[0]); }
     SIMD<mask64, 1> Hi() const { return SIMD<mask64, 1>(val[1]); }
@@ -59,7 +60,8 @@ namespace ASC_HPC
 
     auto Lo() const { return SIMD<double, 1>(val[0]); }
     auto Hi() const { return SIMD<double, 1>(val[1]); }
-    double operator[](int i) const { return val[i]; }
+    double &operator[](int i) { return ((double *)&val)[i]; } // non-const
+    double operator[](int i) const { return val[i]; }         // const
 
     void Store(double *p) const
     {
