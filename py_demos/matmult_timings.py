@@ -1,11 +1,12 @@
 #from ngsolve import *
 from time import time
 from BLAga.bla import Matrix
+#from ngsolve import Matrix
 
 n = 1
 
 data = []
-while n <= 1024*2:
+while n <= 1000*2:
     n = 2*n
 
     A = Matrix(n,n)
@@ -16,7 +17,7 @@ while n <= 1024*2:
     for i in range(runs):
         C = A*B
     te = time()
-    print ('n = ', n, ' time = ', (te-ts)/runs , ' GFLOPS = ', 2*n**3/runs/1e9)
+    print ('n = ', n, ' time = ', (te-ts)/runs , ' GFLOPS = ', n**3/((te-ts)*1e9))
     data.append( (n, (te-ts)/runs) )
 
 print (data)

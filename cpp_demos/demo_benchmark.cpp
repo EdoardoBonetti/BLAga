@@ -44,6 +44,9 @@ void benchmark_matrix_matrix_multiplication(int iterations, int m, int k, int n)
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
+    double time_sec = elapsed.count(); // must be > 0
+
+    double gflops = iterations * 1.0 * m * n * k / (elapsed.count() * 1e9);
 
     std::cout << "Matrix multiplication ("
               << (ORDT == ColMajor ? "ColMajor" : "RowMajor") << " x "
@@ -51,7 +54,8 @@ void benchmark_matrix_matrix_multiplication(int iterations, int m, int k, int n)
               << "), size: " << m << "x" << k << " * " << k << "x" << n
               << ", iterations: " << iterations
               << ", elapsed time: " << elapsed.count() << " s"
-              << ", avg per multiplication: " << (elapsed.count() / iterations) << " s\n";
+              << ", avg per multiplication: " << (elapsed.count() / iterations) << " s\n"
+              << ", GFLOPS: " << gflops << std::endl;
 }
 
 int main()
@@ -76,10 +80,12 @@ int main()
     benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(10, 200, 200, 200);
 
     // Benchmark large matrices (even fewer iterations)
-    benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(1, 1000, 1000, 1000);
-    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(1, 1000, 1000, 1000);
-    benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(1, 1000, 1000, 1000);
-    benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(1, 1000, 1000, 1000);
+    // benchmark_matrix_matrix_multiplication<ColMajor, ColMajor>(1, 2000, 2000, 2000);
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(2, 2000, 2000, 2000);
+
+    benchmark_matrix_matrix_multiplication<RowMajor, RowMajor>(1, 4096, 4096, 4096);
+    // benchmark_matrix_matrix_multiplication<ColMajor, RowMajor>(1, 2000, 2000, 2000);
+    // benchmark_matrix_matrix_multiplication<RowMajor, ColMajor>(1, 2000, 2000, 2000);
 
     return 0;
 }

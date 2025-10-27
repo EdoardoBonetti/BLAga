@@ -17,3 +17,15 @@ target_sources (dummytest PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
 
 add_executable(small_bench small_bench.cpp)
 target_sources (small_bench PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
+
+
+add_executable(benchmark benchmark.cpp)
+target_sources (benchmark PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
+
+
+add_executable(tune_gemm tune_gemm.cpp)
+target_sources (tune_gemm PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
+
+
+add_executable(tune_simd tune_simd.cpp)
+target_sources (tune_simd PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp ../src/simd.h)
