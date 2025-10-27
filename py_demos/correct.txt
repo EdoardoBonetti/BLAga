@@ -1,0 +1,4 @@
+importing BLAga
+Matrix multiplication correct for sizes M=403, P=1777, N=1844
+Matrix multiplication correct for sizes M=444, P=1492, N=112
+Matrix multiplication correct for sizes M=681, P=785, N=562

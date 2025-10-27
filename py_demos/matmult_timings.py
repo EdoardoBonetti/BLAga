@@ -6,7 +6,7 @@ from BLAga.bla import Matrix
 n = 1
 
 data = []
-while n <= 1000*2:
+while n <= 1000*5:
     n = 2*n
 
     A = Matrix(n,n)

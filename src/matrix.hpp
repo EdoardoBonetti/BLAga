@@ -3,16 +3,13 @@
 
 #include <iostream>
 #include "matrixexpression.hpp"
+#include "matrix_fwd.hpp"
 
 namespace bla_ga
 {
-  enum ORDERING
-  {
-    RowMajor,
-    ColMajor
-  };
+
   /*------------MatrixView------------*/
-  template <typename T = double, ORDERING ORD = RowMajor, typename TDIST = std::integral_constant<size_t, 1>>
+  template <typename T, ORDERING ORD, typename TDIST>
   class MatrixView : public MatExpr<MatrixView<T, ORD, TDIST>>
   {
   protected:
@@ -24,9 +21,9 @@ namespace bla_ga
     constexpr size_t Index(size_t i, size_t j) const noexcept
     {
       if constexpr (ORD == RowMajor)
-        return i * ncols + j; // row-major contiguous
+        return i * ncols + j;
       else
-        return j * nrows + i; // column-major contiguous
+        return j * nrows + i;
     }
 
   public:
@@ -41,6 +38,9 @@ namespace bla_ga
         : data(_data), nrows(_nrows), ncols(_ncols)
     {
       dist = std::integral_constant<size_t, 1>();
+      for (size_t j = 0; j < ncols; j++)
+        for (size_t i = 0; i < nrows; i++)
+          data[Index(i, j)] = 0;
     }
 
     MatrixView(size_t _nrows, size_t _ncols, TDIST _dist, T *_data)
@@ -57,7 +57,6 @@ namespace bla_ga
       {
         for (size_t j = 0; j < ncols; j++)
           for (size_t i = 0; i < nrows; i++)
-
             data[Index(i, j)] = m2(i, j);
       }
       return *this;
@@ -104,7 +103,7 @@ namespace bla_ga
   };
 
   /*------------Matrix------------*/
-  template <typename T = double, ORDERING ORD = RowMajor>
+  template <typename T, ORDERING ORD>
   class Matrix : public MatrixView<T, ORD>
   {
     typedef MatrixView<T, ORD> BASE;
@@ -124,7 +123,11 @@ namespace bla_ga
 
   public:
     Matrix(size_t nrows, size_t ncols)
-        : MatrixView<T, ORD>(nrows, ncols, new T[nrows * ncols]) {}
+        : MatrixView<T, ORD>(nrows, ncols, new T[nrows * ncols])
+    {
+      for (size_t i = 0; i < nrows * ncols; i++)
+        data[i] = T(0);
+    }
 
     Matrix(const Matrix &m)
         : Matrix(m.nRows(), m.nCols())

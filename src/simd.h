@@ -121,6 +121,9 @@ namespace bla_ga
     T val;
 
   public:
+    static constexpr size_t S1 = 0;
+    static constexpr size_t S2 = 0;
+
     SIMD() = default;
     SIMD(T _val) : val(_val) {}
     SIMD(std::array<T, 1> vals) : val(vals[0]) {}

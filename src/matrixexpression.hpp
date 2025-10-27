@@ -5,18 +5,12 @@ Author: Edoardo Bonetti
 #ifndef FILE_MAT_EXPRESSION
 #define FILE_MAT_EXPRESSION
 
+#include "matrix_fwd.hpp" // ✅ instead of redeclaring enum or templates
 #include "vector.hpp"
-#include "simd.h"
-#include <algorithm>
+#include "matrixexpressionspecialization.hpp"
 
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 namespace bla_ga
 {
-
-  // create a prename for MatrixView
-  // Bring them into local scope
 
   /*------------MatExpr------------*/
   template <typename T>
@@ -100,8 +94,7 @@ namespace bla_ga
       return sum0 + sum1;
     }
 
-    size_t
-    nRows() const
+    size_t nRows() const
     {
       return a.nRows();
     }
@@ -112,76 +105,20 @@ namespace bla_ga
     template <typename MatType> // does inline help?
     inline void Eval(MatType &C) const
     {
-      std::cout << "Using simple Eval" << std::endl;
-
-      // PRINT THE TYPE OF decltype(TA{} * TB{})
-      std::cout << "Type of matrix multiplication elements: " << typeid(decltype(a(0, 0) * b(0, 0))).name() << std::endl;
-
-      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
-
-      constexpr size_t BS = 256;
-      constexpr size_t RS = 4;
-
-      for (size_t ii = 0; ii < M; ii += BS)
-        for (size_t kk = 0; kk < K; kk += BS)
-          for (size_t jj = 0; jj < N; jj += BS)
-            for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
-              for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
-              {
-                double cloc[RS][RS] = {0.0};
-
-                size_t tileM = std::min(RS, M - i);
-                size_t tileN = std::min(RS, N - j);
-
-                // accumulate into cloc
-                for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-                  for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                    for (size_t jj2 = 0; jj2 < tileN; ++jj2)
-                      cloc[ii2][jj2] += a(i + ii2, k) * b(k, j + jj2);
-
-                // store back to C once
-                for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                  for (size_t jj2 = 0; jj2 < tileN; ++jj2)
-                    C(i + ii2, j + jj2) += cloc[ii2][jj2];
-              }
+      // Delegate to specialized implementation
+      const auto &a = this->a;
+      const auto &b = this->b;
+      EvalMatMatMultiplyDouble(a, b, C);
     }
 
     template <typename MatType>
       requires std::is_same_v<decltype(a(0, 0) * b(0, 0)), double>
     inline void EvalSIMD(MatType &C) const
     {
-      std::cout << "Using simple SIMD Eval" << std::endl;
-
-      // PRINT THE TYPE OF decltype(TA{} * TB{})
-      std::cout << "Type of matrix multiplication elements: " << typeid(decltype(a(0, 0) * b(0, 0))).name() << std::endl;
-
-      size_t M = a.nRows(), N = b.nCols(), K = a.nCols();
-
-      constexpr size_t BS = 128;
-      constexpr size_t RS = 4;
-
-      for (size_t ii = 0; ii < M; ii += BS)
-        for (size_t kk = 0; kk < K; kk += BS)
-          for (size_t jj = 0; jj < N; jj += BS)
-            for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
-              for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
-              {
-                double cloc[RS][RS] = {0.0};
-
-                size_t tileM = std::min(RS, M - i);
-                size_t tileN = std::min(RS, N - j);
-
-                // accumulate into cloc
-                for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-                  for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                    for (size_t jj2 = 0; jj2 < tileN; ++jj2)
-                      cloc[ii2][jj2] += a(i + ii2, k) * b(k, j + jj2);
-
-                // store back to C once
-                for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                  for (size_t jj2 = 0; jj2 < tileN; ++jj2)
-                    C(i + ii2, j + jj2) += cloc[ii2][jj2];
-              }
+      // Delegate to specialized implementation
+      const auto &a = this->a;
+      const auto &b = this->b;
+      SIMDEvalMatMatMultiplyDouble(a, b, C);
     }
   };
 
