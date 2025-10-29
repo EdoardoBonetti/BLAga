@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: BLAga
+Version: 0.0.3
+Author: E. Bonetti
+License: MIT
+License-File: LICENSE
+Dynamic: author
+Dynamic: license
+Dynamic: license-file

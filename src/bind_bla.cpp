@@ -6,13 +6,13 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(bla, m)
 {
-    m.doc() = "Basic linear algebra module";
+     m.doc() = "Basic linear algebra module";
 
-    bind_vector<double>(m, "Vector");
-    bind_matrix<double>(m, "Matrix");
+     bind_vector<double>(m, "Vector");
+     bind_matrix<double>(m, "Matrix");
 
-    // Later you can also bind int, float, complex:
-    bind_vector<int>(m, "VectorInt");
-    // bind_matrix<std::complex<double>>(m, "MatrixCplx");
-    bind_vectorview<double>(m, "VectorView");
+     // Later you can also bind int, float, complex:
+     bind_vector<int>(m, "VectorInt");
+     // bind_matrix<std::complex<double>>(m, "MatrixCplx");
+     bind_vectorview<double>(m, "VectorView");
 }
