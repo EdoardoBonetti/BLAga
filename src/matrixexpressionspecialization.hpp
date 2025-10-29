@@ -20,50 +20,26 @@
 namespace bla_ga
 {
 
-    /*
     template <typename MA, typename MB, typename MC>
     inline void EvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
     {
-        std::cout << "Using simple Eval" << std::endl;
-
-        // PRINT THE TYPE OF decltype(TA{} * TB{})
-        std::cout << "Type of matrix multiplication elements: "
-                  << typeid(decltype(a(0, 0) * b(0, 0))).name() << std::endl;
-
-        size_t M = a.nRows();
-        size_t K = a.nCols();
-        size_t N = b.nCols();
-
-        constexpr size_t BS = 256;
-        constexpr size_t RS = 4;
-
-        for (size_t ii = 0; ii < M; ii += BS)
-            for (size_t kk = 0; kk < K; kk += BS)
-                for (size_t jj = 0; jj < N; jj += BS)
-                    for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
-                        for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
-                        {
-                            double cloc[RS][RS] = {0.0};
-
-                            size_t tileM = std::min(RS, M - i);
-                            size_t tileN = std::min(RS, N - j);
-
-                            // accumulate into cloc
-                            for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-                                for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                                    for (size_t jj2 = 0; jj2 < tileN; ++jj2)
-                                        cloc[ii2][jj2] += a(i + ii2, k) * b(k, j + jj2);
-
-                            // store back to C once
-                            for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                                for (size_t jj2 = 0; jj2 < tileN; ++jj2)
-                                    C(i + ii2, j + jj2) += cloc[ii2][jj2];
-                        }
-    };*/
+        for (size_t i = 0; i < a.nRows(); ++i)
+        {
+            for (size_t j = 0; j < b.nCols(); ++j)
+            {
+                double sum = 0.0;
+                for (size_t k = 0; k < a.nCols(); ++k)
+                {
+                    sum += a(i, k) * b(k, j);
+                }
+                C(i, j) = sum;
+            }
+        }
+    };
 
     // Optimized 4x4 micro-kernel using SIMD<double,4>
 
-    static inline void micro_kernel_4x4_packedB_SIMD(
+    void micro_kernel_4x4_packedB_SIMD(
         const double *__restrict__ A,
         const double *__restrict__ packedB,
         double *__restrict__ C,
@@ -181,7 +157,7 @@ namespace bla_ga
         }
     }
 
-    void pack_B_tile(const double *B, size_t ldb, size_t K_block, size_t N_block, double *packedB)
+    inline static void pack_B_tile(const double *B, size_t ldb, size_t K_block, size_t N_block, double *packedB)
     {
         // Column-major packing for better reuse in kernel
         // B: (K_block × N_block)
@@ -199,7 +175,7 @@ namespace bla_ga
     }
 
     template <typename MA, typename MB, typename MC>
-    void multiply_tiles_packedB_SIMD(
+    inline static void multiply_tiles_packedB_SIMD(
         const MA &A, const MB &B, MC &C,
         size_t i0, size_t j0, size_t k0,
         size_t M_block, size_t N_block, size_t K_block)
@@ -234,7 +210,7 @@ namespace bla_ga
     }
 
     template <typename MA, typename MB, typename MC>
-    void SIMDEvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
+    inline static void SIMDEvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
     {
         // std::cout << "Using simple SIMD Eval" << std::endl;
         //  print the matrices:
@@ -259,9 +235,9 @@ namespace bla_ga
         }
 
 #if defined(__arm64__)
-        constexpr size_t BM = 64 * 6;
-        constexpr size_t BN = 64 * 4;
-        constexpr size_t BK = 64 * 1;
+        constexpr size_t BM = 64 * 4; // rows of A
+        constexpr size_t BK = 64 * 4; // inner dimension
+        constexpr size_t BN = 64 * 1; // cols of B
 #elif defined(__AVX2__)
         // intel
         constexpr size_t BM = 128;

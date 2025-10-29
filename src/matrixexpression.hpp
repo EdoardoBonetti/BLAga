@@ -118,7 +118,7 @@ namespace bla_ga
       // Delegate to specialized implementation
       const auto &a = this->a;
       const auto &b = this->b;
-      SIMDEvalMatMatMultiplyDouble(a, b, C);
+      EvalMatMatMultiplyDouble(a, b, C);
     }
   };
 

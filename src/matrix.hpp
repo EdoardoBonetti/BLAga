@@ -4,6 +4,7 @@
 #include <iostream>
 #include "matrixexpression.hpp"
 #include "matrix_fwd.hpp"
+#include <ostream>
 
 namespace bla_ga
 {
@@ -122,11 +123,10 @@ namespace bla_ga
     }
 
   public:
-    Matrix(size_t nrows, size_t ncols)
+    Matrix(size_t nrows, size_t ncols, T val = T(0))
         : MatrixView<T, ORD>(nrows, ncols, new T[nrows * ncols])
     {
-      for (size_t i = 0; i < nrows * ncols; i++)
-        data[i] = T(0);
+      std::fill_n(data, nrows * ncols, val);
     }
 
     Matrix(const Matrix &m)
@@ -183,18 +183,24 @@ namespace bla_ga
     // Create Row(i) and Col(j) functions
     VectorView<T> Row(size_t i) const
     {
-      if constexpr (ORD == RowMajor)
-        return VectorView<T>(ncols, data + i * ncols);
-      else
-        return VectorView<T>(nrows, data + i);
+      return VectorView<T>(ncols, data + i * ncols);
     }
-
     VectorView<T> Col(size_t j) const
     {
+      return VectorView<T>(nrows * ncols, data).Slice(j, ncols).Range(0, nrows);
+    }
+    // VectorView<T> Col(size_t j) const
+    //{
+    //   return VectorView<T>(nrows, data + j);
+    // }
+
+    // Create Rows() and Cols() functions to extract a submatri:
+    MatrixView<T, ORD> Rows(size_t i, size_t j) const
+    {
       if constexpr (ORD == RowMajor)
-        return VectorView<T>(nrows, ncols, data + j);
+        return MatrixView<T, ORD>(j - i + 1, ncols, data + i * ncols);
       else
-        return VectorView<T>(ncols, data + j * nrows);
+        return MatrixView<T, ORD>(nrows, j - i + 1, data + i);
     }
   };
 

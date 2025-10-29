@@ -48,7 +48,7 @@ void benchmark_matrix_matrix_multiplication(int n, int iterations)
 
 int main()
 {
-    int sizes[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4000};
+    int sizes[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048};
     for (auto n : sizes)
         benchmark_matrix_matrix_multiplication<double, RowMajor, RowMajor>(n, 1);
     return 0;

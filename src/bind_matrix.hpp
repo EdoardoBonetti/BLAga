@@ -10,9 +10,14 @@ template <typename T>
 void bind_matrix(py::module &m, const char *classname)
 {
     py::class_<Matrix<T>>(m, classname)
-        .def(py::init<size_t, size_t>(), py::arg("rows"), py::arg("cols"))
+        .def(py::init<size_t, size_t, T>(), py::arg("rows"), py::arg("cols"), py::arg("value") = T(0), "create matrix of given size")
         .def("nRows", &Matrix<T>::nRows)
         .def("nCols", &Matrix<T>::nCols)
+        .def("Transpose", &Matrix<T>::Transpose)
+        .def("Flatten", &Matrix<T>::Flatten)
+        // I need to define the attribute Row() and Col() that take an integer as argument and return a vector
+        .def("Row", &Matrix<T>::Row, py::return_value_policy::reference_internal)
+        .def("Col", &Matrix<T>::Col, py::return_value_policy::reference_internal)
         .def("__getitem__", [](Matrix<T> &m, std::pair<int, int> idx)
              {
                  int i = idx.first < 0 ? idx.first + m.nRows() : idx.first;

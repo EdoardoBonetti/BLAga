@@ -4,8 +4,8 @@ target_sources (demo_vector PUBLIC ../src/vector.hpp ../src/vectorexpression.hpp
 target_sources (demo_matrix PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
  
 
-#add optimization flags O3 and for math library
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3  -lm")
+# optimization flags O3 and for math library
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1  -march=native")
 
 add_executable (dummytest dummytest.cpp)
 target_sources (dummytest PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
@@ -22,6 +22,9 @@ target_sources (demo_benchmark PUBLIC ../src/matrix.hpp ../src/matrixexpression.
 #
 add_executable(benchmark benchmark.cpp)
 target_sources (benchmark PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
+
+
+
 #
 #
 #add_executable(tune_gemm tune_gemm.cpp)

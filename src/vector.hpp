@@ -23,7 +23,11 @@ namespace bla_ga
 
     template <typename TDIST2>
     VectorView(const VectorView<T, TDIST2> &v2)
-        : data(v2.Data()), size(v2.Size()), dist(v2.Dist()) {}
+        : data(v2.Data()), size(v2.Size())
+    {
+      if constexpr (!std::is_same_v<TDIST, std::integral_constant<size_t, 1>>)
+        dist = v2.Dist();
+    }
 
     VectorView(size_t _size, T *_data)
         : data(_data), size(_size) {}
@@ -61,6 +65,11 @@ namespace bla_ga
     auto Slice(size_t first, size_t slice) const
     {
       return VectorView<T, size_t>(size / slice, dist * slice, data + first * dist);
+    }
+
+    auto SubVector(size_t first, size_t next, size_t stride) const
+    { // First do Slice of the vector, then do the Range
+      return Range(first, next).Slice(0, stride);
     }
   };
 

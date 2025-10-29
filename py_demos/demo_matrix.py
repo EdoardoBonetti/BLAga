@@ -59,3 +59,18 @@ np_3 = np_1.dot(np_2)
 for i in range(p):
     for j in range(q):
         assert mat_3[i, j] == np_3[i, j]
+
+
+M , N = 4, 4
+a = Matrix( M, N)
+for i in range(M):
+    for j in range(N):
+        a[i, j] = i*10 + j
+
+print(a)
+#print(a.Flatten())
+for i in range(a.nRows()):
+    print(a.Row(i))
+
+for j in range(a.nCols()):
+    print(a.Col(j))

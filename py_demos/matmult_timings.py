@@ -6,7 +6,7 @@ from BLAga.bla import Matrix
 n = 1
 
 data = []
-while n <= 1000*5:
+while n <= 1000*1:
     n = 2*n
 
     A = Matrix(n,n)
@@ -17,7 +17,7 @@ while n <= 1000*5:
     for i in range(runs):
         C = A*B
     te = time()
-    print ('n = ', n, ' time = ', (te-ts)/runs , ' GFLOPS = ', n**3/((te-ts)*1e9))
+    print ('n = ', n, " runs = " , runs, ' time = ', (te-ts)/runs , ' GFLOPS = ', n**3/((te-ts)*1e9))
     data.append( (n, (te-ts)/runs) )
 
 print (data)
