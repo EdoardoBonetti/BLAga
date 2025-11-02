@@ -17,6 +17,12 @@ void bind_vector(py::module &m, const char *classname)
                  if (i < 0) i += self.Size();
                  if (i < 0 || i >= self.Size()) throw py::index_error("vector index out of range");
                  return self(i); })
+         .def("__getitem__", [](Vector<T> &v, py::slice slice)
+              {
+                        size_t start, stop, step, slicelength;
+                        if (!slice.compute(v.Size(), &start, &stop, &step, &slicelength))
+                            throw py::error_already_set();
+                        return  v.SubVector(start, stop, step); })
          .def("__setitem__", [](Vector<T> &self, int i, T val)
               {
                  if (i < 0) i += self.Size();
@@ -60,6 +66,32 @@ void bind_vectorview(py::module &m, const char *classname)
             if (i >= v.Size()) throw py::index_error();
             v(i) = val; })
          .def("__repr__", [](const VectorView<T> &v)
+              {
+            std::ostringstream ss;
+            ss << "\n";
+            for (size_t i = 0; i < v.Size(); ++i)
+            {
+                if (i > 0) ss << ", ";
+                ss << v(i);
+            }
+            ss << "\n";
+            return ss.str(); });
+}
+
+template <typename T>
+void bind_stridedvectorview(py::module &m, const char *classname)
+{
+     py::class_<VectorView<T, size_t>>(m, classname)
+         .def("__len__", &VectorView<T, size_t>::Size)
+         .def("__getitem__", [](VectorView<T, size_t> &v, size_t i)
+              {
+            if (i >= v.Size()) throw py::index_error();
+            return v(i); })
+         .def("__setitem__", [](VectorView<T, size_t> &v, size_t i, T val)
+              {
+            if (i >= v.Size()) throw py::index_error();
+            v(i) = val; })
+         .def("__repr__", [](const VectorView<T, size_t> &v)
               {
             std::ostringstream ss;
             ss << "\n";

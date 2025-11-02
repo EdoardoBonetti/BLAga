@@ -9,7 +9,7 @@ namespace bla_ga
 {
 
   /*------------VectorView------------*/
-  template <typename T, typename TDIST = std::integral_constant<size_t, 1>>
+  template <typename T = double, typename TDIST = std::integral_constant<size_t, 1>>
   class VectorView : public VecExpr<VectorView<T, TDIST>>
   {
   protected:
@@ -64,7 +64,7 @@ namespace bla_ga
 
     auto Slice(size_t first, size_t slice) const
     {
-      return VectorView<T, size_t>(size / slice, dist * slice, data + first * dist);
+      return VectorView<T, size_t>(1 + (size * dist - dist - first) / slice, dist * slice, data + first * dist);
     }
 
     auto SubVector(size_t first, size_t next, size_t stride) const
@@ -74,7 +74,7 @@ namespace bla_ga
   };
 
   /*------------Vector------------*/
-  template <typename T>
+  template <typename T = double>
   class Vector : public VectorView<T>
   {
     typedef VectorView<T> BASE;

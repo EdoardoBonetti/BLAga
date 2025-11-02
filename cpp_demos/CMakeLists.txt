@@ -23,6 +23,11 @@ target_sources (demo_benchmark PUBLIC ../src/matrix.hpp ../src/matrixexpression.
 add_executable(benchmark benchmark.cpp)
 target_sources (benchmark PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
 
+add_executable(dummy2 dummy2.cpp)
+target_sources (dummy2 PUBLIC ../src/vector.hpp )
+
+add_executable(test_vector_slice test_vector_slice.cpp)
+target_sources (test_vector_slice PUBLIC ../src/vector.hpp )
 
 
 #

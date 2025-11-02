@@ -1,6 +1,7 @@
 # Create test executable
 add_executable(cpp_tests
     test_vector.cpp
+    test_vector_double.cpp
     test_matrix.cpp
 )
 

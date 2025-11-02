@@ -14,5 +14,6 @@ PYBIND11_MODULE(bla, m)
      // Later you can also bind int, float, complex:
      bind_vector<int>(m, "VectorInt");
      // bind_matrix<std::complex<double>>(m, "MatrixCplx");
-     bind_vectorview<double>(m, "VectorView");
+     bind_vectorview<double>(m, "CVectorView");
+     bind_stridedvectorview<double>(m, "SVectorView");
 }
