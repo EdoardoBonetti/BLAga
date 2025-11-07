@@ -2,7 +2,6 @@ LICENSE
 README.md
 pyproject.toml
 setup.py
-BLAga/__init__ 2.py
 BLAga/__init__.py
 BLAga.egg-info/PKG-INFO
 BLAga.egg-info/PKG-INFO 2

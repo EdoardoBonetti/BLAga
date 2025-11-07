@@ -16,7 +16,7 @@ endif()
 # -----------------------------
 # General compile setup
 # -----------------------------
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -march=native")# -ffast-math -funroll-loops ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -march=native  -O3 -ffast-math -funroll-loops ")
 
 include_directories(src concurrentqueue amx cpp_demos)
 
