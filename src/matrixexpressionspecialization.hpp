@@ -23,6 +23,7 @@ namespace bla_ga
     template <typename MA, typename MB, typename MC>
     inline void EvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
     {
+        // std::cout << "Using simple Eval" << std::endl;
         for (size_t i = 0; i < a.nRows(); ++i)
         {
             for (size_t j = 0; j < b.nCols(); ++j)
@@ -39,7 +40,7 @@ namespace bla_ga
 
     // Optimized 4x4 micro-kernel using SIMD<double,4>
 
-    void micro_kernel_4x4_packedB_SIMD(
+    inline void micro_kernel_4x4_packedB_SIMD(
         const double *__restrict__ A,
         const double *__restrict__ packedB,
         double *__restrict__ C,
@@ -213,7 +214,7 @@ namespace bla_ga
     inline static void SIMDEvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
     {
         // std::cout << "Using simple SIMD Eval" << std::endl;
-        //  print the matrices:
+        //   print the matrices:
 
         // std::cout << "matrix a: \n"
         //           << a << std::endl;

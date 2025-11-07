@@ -3,7 +3,8 @@ add_executable(cpp_tests
     test_vector.cpp
     test_vector_double.cpp
     test_matrix.cpp
-)
+    test_matrix_double.cpp
+    )
 
 # Link with your project’s library (or src)
 target_link_libraries(cpp_tests

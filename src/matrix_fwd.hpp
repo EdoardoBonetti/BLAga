@@ -14,7 +14,7 @@ namespace bla_ga
         ColMajor
     };
 
-    template <typename T = double, ORDERING ORD = RowMajor, typename TDIST = std::integral_constant<size_t, 1>>
+    template <typename T = double, ORDERING ORD = RowMajor>
     class MatrixView;
 
     template <typename T = double, ORDERING ORD = RowMajor>

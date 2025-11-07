@@ -16,4 +16,6 @@ PYBIND11_MODULE(bla, m)
      // bind_matrix<std::complex<double>>(m, "MatrixCplx");
      bind_vectorview<double>(m, "CVectorView");
      bind_stridedvectorview<double>(m, "SVectorView");
+
+     bind_matrixview<double>(m, "CMatrixView");
 }

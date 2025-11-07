@@ -18,6 +18,8 @@ void bind_matrix(py::module &m, const char *classname)
         // I need to define the attribute Row() and Col() that take an integer as argument and return a vector
         .def("Row", &Matrix<T>::Row, py::return_value_policy::reference_internal)
         .def("Col", &Matrix<T>::Col, py::return_value_policy::reference_internal)
+        .def("Rows", &Matrix<T>::Rows, py::return_value_policy::reference_internal)
+        .def("Cols", &Matrix<T>::Cols, py::return_value_policy::reference_internal)
         .def("__getitem__", [](Matrix<T> &m, std::pair<int, int> idx)
              {
                  int i = idx.first < 0 ? idx.first + m.nRows() : idx.first;
@@ -67,4 +69,42 @@ void bind_matrix(py::module &m, const char *classname)
                  std::stringstream ss;
                  ss << m;
                  return ss.str(); });
+}
+
+template <typename T>
+void bind_matrixview(py::module &m, const char *classname)
+{
+    py::class_<MatrixView<T>>(m, classname)
+        .def("__len__", &MatrixView<T>::nRows)
+        .def("nRows", &MatrixView<T>::nRows)
+        .def("nCols", &MatrixView<T>::nCols)
+        //.def("Row", &MatrixView<T>::Row, py::return_value_policy::reference_internal)
+        //.def("Col", &MatrixView<T>::Col, py::return_value_policy::reference_internal)
+        .def("__getitem__", [](MatrixView<T> &mv, std::pair<int, int> idx)
+             {
+            int i = idx.first < 0 ? idx.first + mv.nRows() : idx.first;
+            int j = idx.second < 0 ? idx.second + mv.nCols() : idx.second;
+            if(i < 0 || i >= mv.nRows() || j < 0 || j >= mv.nCols())
+                throw py::index_error("MatrixView index out of range");
+            return mv(i, j); })
+        .def("__setitem__", [](MatrixView<T> &mv, std::pair<int, int> idx, T val)
+             {
+            int i = idx.first < 0 ? idx.first + mv.nRows() : idx.first;
+            int j = idx.second < 0 ? idx.second + mv.nCols() : idx.second;
+            if(i < 0 || i >= mv.nRows() || j < 0 || j >= mv.nCols())
+                throw py::index_error("MatrixView index out of range");
+            mv(i, j) = val; })
+        .def("__repr__", [](const MatrixView<T> &mv)
+             {
+            std::ostringstream ss;
+            for (size_t i = 0; i < mv.nRows(); ++i)
+            {
+                if (i > 0) ss << "\n";
+                for (size_t j = 0; j < mv.nCols(); ++j)
+                {
+                    if (j > 0) ss << ", ";
+                    ss << mv(i,j);
+                }
+            }
+            return ss.str(); });
 }

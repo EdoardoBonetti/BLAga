@@ -10,6 +10,7 @@ using bla_ga::RowMajor;
 
 int main()
 {
+    // size_t N = 2 * 1023;
     size_t N = 2 * 1023;
     std::cout << "Matrix size: " << N << " x " << N << std::endl;
     Matrix<double, RowMajor> A(N, N);

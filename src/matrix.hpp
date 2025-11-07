@@ -10,41 +10,45 @@ namespace bla_ga
 {
 
   /*------------MatrixView------------*/
-  template <typename T, ORDERING ORD, typename TDIST>
-  class MatrixView : public MatExpr<MatrixView<T, ORD, TDIST>>
+  template <typename T, ORDERING ORD>
+  class MatrixView : public MatExpr<MatrixView<T, ORD>>
   {
   protected:
     T *data;
     size_t nrows;
     size_t ncols;
-    TDIST dist;
+    size_t dist;
 
     constexpr size_t Index(size_t i, size_t j) const noexcept
     {
       if constexpr (ORD == RowMajor)
-        return i * ncols + j;
+        return i * dist + j;
       else
-        return j * nrows + i;
+        return j * dist + i;
     }
 
   public:
     MatrixView() = default;
     MatrixView(const MatrixView &) = default;
 
-    template <typename TDIST2, ORDERING ORD2>
-    MatrixView(const MatrixView<T, ORD2, TDIST2> &m2)
+    template <ORDERING ORD2>
+    MatrixView(const MatrixView<T, ORD2> &m2)
         : data(m2.Data()), nrows(m2.nRows()), ncols(m2.nCols()), dist(m2.Dist()) {}
 
     MatrixView(size_t _nrows, size_t _ncols, T *_data)
         : data(_data), nrows(_nrows), ncols(_ncols)
     {
-      dist = std::integral_constant<size_t, 1>();
+      if constexpr (ORD == RowMajor)
+        dist = ncols;
+      else
+        dist = nrows;
+
       for (size_t j = 0; j < ncols; j++)
         for (size_t i = 0; i < nrows; i++)
-          data[Index(i, j)] = 0;
+          data[Index(i, j)] = _data[Index(i, j)];
     }
 
-    MatrixView(size_t _nrows, size_t _ncols, TDIST _dist, T *_data)
+    MatrixView(size_t _nrows, size_t _ncols, size_t _dist, T *_data)
         : data(_data), nrows(_nrows), ncols(_ncols), dist(_dist) {}
 
     template <typename TB>
@@ -140,6 +144,7 @@ namespace bla_ga
     {
       std::swap(nrows, m.nrows);
       std::swap(ncols, m.ncols);
+      std::swap(dist, m.dist);
       std::swap(data, m.data);
     }
 
@@ -172,7 +177,7 @@ namespace bla_ga
     }
 
     // To create transpose Just swap nrows and ncols
-    Matrix<T, ORD == RowMajor ? ColMajor : RowMajor> Transpose() const
+    MatrixView<T, ORD == RowMajor ? ColMajor : RowMajor> Transpose() const
     {
       return MatrixView<T, ORD == RowMajor ? ColMajor : RowMajor>(ncols, nrows, data);
     }
@@ -185,9 +190,9 @@ namespace bla_ga
     {
       return VectorView<T>(ncols, data + i * ncols);
     }
-    VectorView<T> Col(size_t j) const
+    VectorView<T, size_t> Col(size_t j) const
     {
-      return VectorView<T>(nrows * ncols, data).Slice(j, ncols).Range(0, nrows);
+      return VectorView<T, size_t>(nrows, ncols, data + j);
     }
     // VectorView<T> Col(size_t j) const
     //{
@@ -198,9 +203,18 @@ namespace bla_ga
     MatrixView<T, ORD> Rows(size_t i, size_t j) const
     {
       if constexpr (ORD == RowMajor)
-        return MatrixView<T, ORD>(j - i + 1, ncols, data + i * ncols);
+        return MatrixView<T, ORD>(j - i, ncols, data + i * ncols);
       else
         return MatrixView<T, ORD>(nrows, j - i + 1, data + i);
+    }
+
+    MatrixView<T, ORD> Cols(size_t i, size_t j) const
+    {
+      if constexpr (ORD == RowMajor)
+        // return MatrixView<T, ORD, size_t>(nrows, ncols, dist, data );
+        return MatrixView<T, ORD>(nrows, j - i, ncols, data + i);
+      else
+        return MatrixView<T, ORD>(j - i + 1, ncols, nrows, data + i * ncols);
     }
   };
 
