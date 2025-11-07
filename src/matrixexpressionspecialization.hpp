@@ -24,16 +24,29 @@ namespace bla_ga
     inline void EvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
     {
         // std::cout << "Using simple Eval" << std::endl;
+        /*        for (size_t i = 0; i < a.nRows(); ++i)
+                {
+                    for (size_t j = 0; j < b.nCols(); ++j)
+                    {
+                        double sum = 0.0;
+                        for (size_t k = 0; k < a.nCols(); ++k)
+                        {
+                            sum += a(i, k) * b(k, j);
+                        }
+                        C(i, j) += sum;
+                    }
+                }*/
+
         for (size_t i = 0; i < a.nRows(); ++i)
         {
-            for (size_t j = 0; j < b.nCols(); ++j)
+            for (size_t k = 0; k < a.nCols(); ++k)
             {
-                double sum = 0.0;
-                for (size_t k = 0; k < a.nCols(); ++k)
-                {
-                    sum += a(i, k) * b(k, j);
-                }
-                C(i, j) = sum;
+                double aik = a(i, k);
+                const double *__restrict__ b_row = &b(k, 0);
+                double *__restrict__ c_row = &C(i, 0);
+
+                for (size_t j = 0; j < b.nCols(); ++j)
+                    c_row[j] += aik * b_row[j];
             }
         }
     };
@@ -236,9 +249,9 @@ namespace bla_ga
         }
 
 #if defined(__arm64__)
-        constexpr size_t BM = 64 * 4; // rows of A
-        constexpr size_t BK = 64 * 4; // inner dimension
-        constexpr size_t BN = 64 * 1; // cols of B
+        constexpr size_t BM = 32 * 2; // rows of A
+        constexpr size_t BK = 32 * 1; // inner dimension
+        constexpr size_t BN = 32 * 2; // cols of B
 #elif defined(__AVX2__)
         // intel
         constexpr size_t BM = 128;
@@ -256,18 +269,34 @@ namespace bla_ga
                 for (size_t jj = 0; jj < N; jj += BN)
 
                 {
+
                     size_t M_block = std::min(BM, M - ii);
                     size_t N_block = std::min(BN, N - jj);
                     size_t K_block = std::min(BK, K - kk);
+
+                    // print it
+                    auto ar = MatrixView(a.Rows(ii, ii + M_block).Cols(kk, kk + K_block));
+                    // print the type
+                    auto br = Matrix(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block).Transpose());
+
+                    auto subC = C.Rows(ii, ii + M_block).Cols(jj, jj + N_block);
+                    EvalMatMatMultiplyDouble(ar, br, subC);
 
                     // std::cout << "Processing block: i=" << ii << " j=" << jj << " k=" << kk
                     //           << " M_block=" << M_block << " N_block=" << N_block << " K_block=" << K_block
                     //           << std::endl;
 
+                    // print the block
+
+                    // Matrix<double> ar(a.Rows(ii, ii + M_block).Cols(kk, kk + K_block));
+                    //  Matrix<double> br(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block));
+                    //  auto cr(ar * br);
+                    //   C.Rows(ii, ii + M_block).Cols(jj, jj + N_block) = cr;
+
                     // multiply_tiles_packedB_unrollK_2(A, B, C,
                     //                                ii, jj, kk,
                     //                                M_block, N_block, K_block);
-                    multiply_tiles_packedB_SIMD(a, b, C, ii, jj, kk, M_block, N_block, K_block);
+                    // multiply_tiles_packedB_SIMD(a, b, C, ii, jj, kk, M_block, N_block, K_block);
                 }
     };
 

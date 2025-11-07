@@ -105,6 +105,27 @@ namespace bla_ga
           (*this)(i, j) *= scal;
       return *this;
     }
+
+    MatrixView<T, ORD> Rows(size_t i, size_t j) const
+    {
+      if constexpr (ORD == RowMajor)
+        return MatrixView<T, ORD>(j - i, ncols, data + i * ncols);
+      else
+        return MatrixView<T, ORD>(nrows, j - i + 1, data + i);
+    }
+
+    MatrixView<T, ORD> Cols(size_t i, size_t j) const
+    {
+      if constexpr (ORD == RowMajor)
+        // return MatrixView<T, ORD, size_t>(nrows, ncols, dist, data );
+        return MatrixView<T, ORD>(nrows, j - i, ncols, data + i);
+      else
+        return MatrixView<T, ORD>(j - i + 1, ncols, nrows, data + i * ncols);
+    }
+    MatrixView<T, ORD == RowMajor ? ColMajor : RowMajor> Transpose() const
+    {
+      return MatrixView<T, ORD == RowMajor ? ColMajor : RowMajor>(ncols, nrows, data);
+    }
   };
 
   /*------------Matrix------------*/
