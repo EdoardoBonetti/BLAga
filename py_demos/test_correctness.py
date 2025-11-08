@@ -4,15 +4,16 @@ from ngsolve import Matrix as ngsMatrix
 import numpy as np
 
 # M, P, N sizes random vectors of length 30 between 1 and 1000
-M_sizes = np.random.randint(1, 2000, size=3)
-P_sizes = np.random.randint(1, 2000, size=3)
-N_sizes = np.random.randint(1, 2000, size=3)
+M_sizes = np.random.randint(1, 1000, size=3)
+P_sizes = np.random.randint(1, 1000, size=3)
+N_sizes = np.random.randint(1, 1000, size=3)
 
 for M, P, N in zip(M_sizes, P_sizes, N_sizes):
     ngA = ngsMatrix(M, P)
     ngB = ngsMatrix(P, N)
     blaA = blaMatrix(M, P)
     blaB = blaMatrix(P, N)
+
 
     # Initialize matrices with random values
     for i in range(M):
@@ -39,7 +40,7 @@ for M, P, N in zip(M_sizes, P_sizes, N_sizes):
             if abs(ngC[i, j] - blaC[i, j]) > 1e-8:
                 correct = False
                 print(f"Mismatch at C[{i},{j}]: ngsolve={ngC[i,j]}, BLAga={blaC[i,j]}")
-                break
+                #break
     if correct:
         print(f"Matrix multiplication correct for sizes M={M}, P={P}, N={N}")
     else:

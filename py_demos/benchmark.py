@@ -2,7 +2,7 @@ import time
 import matplotlib.pyplot as plt
 from BLAga.bla import Matrix  # Your pybind11 wrapper
 #from ngsolve import Matrix  # Using ngsolve's Matrix for demonstration
-sizes = [255, 511, 1023, 2047, 4095 ]
+sizes = [255, 511, 1023, 2047, 3000 ]
 data = []
 
 for n in sizes:

@@ -16,8 +16,7 @@ endif()
 # -----------------------------
 # General compile setup
 # -----------------------------
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -march=native  -O3 -ffast-math -funroll-loops ")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -O1 -ffast-math -ffp-contract=fast -funroll-loops -ftree-vectorize -flto  -mcpu=apple-m1")
 include_directories(src concurrentqueue amx cpp_demos)
 
 add_subdirectory(cpp_demos)

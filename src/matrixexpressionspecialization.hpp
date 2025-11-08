@@ -20,24 +20,6 @@
 namespace bla_ga
 {
 
-    template <typename MA, typename MB, typename MC>
-    inline void EvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
-    {
-
-        for (size_t i = 0; i < a.nRows(); ++i)
-        {
-            for (size_t k = 0; k < a.nCols(); ++k)
-            {
-                double sum = 0.0;
-
-                for (size_t j = 0; j < b.nCols(); ++j)
-                {
-                    C(i, j) += a(i, k) * b(k, j);
-                }
-            }
-        }
-    };
-
     // Optimized 4x4 micro-kernel using SIMD<double,4>
 
     template <typename MA, typename MB, typename MC>
@@ -65,26 +47,62 @@ namespace bla_ga
 #endif
 
         for (size_t ii = 0; ii < M; ii += BM)
+        {
+            size_t M_block = std::min(BM, M - ii);
             for (size_t kk = 0; kk < K; kk += BK)
+            {
+                size_t K_block = std::min(BK, K - kk);
+                auto ar = MatrixView(a.Rows(ii, ii + M_block).Cols(kk, kk + K_block));
+
                 for (size_t jj = 0; jj < N; jj += BN)
-
                 {
-
-                    size_t M_block = std::min(BM, M - ii);
                     size_t N_block = std::min(BN, N - jj);
-                    size_t K_block = std::min(BK, K - kk);
+                    // auto br = Matrix(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block).Transpose());
+                    auto br = Matrix(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block));
 
-                    auto ar = MatrixView(a.Rows(ii, ii + M_block).Cols(kk, kk + K_block));
-                    auto br = Matrix(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block).Transpose());
                     // auto br = Matrix(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block));
 
-                    auto subC = C.Rows(ii, ii + M_block).Cols(jj, jj + N_block);
-                    EvalMatMatMultiplyDouble(ar, br, subC);
+                    // auto br = Matrix(b.Rows(kk, kk + K_block).Cols(jj, jj + N_block));
 
+                    auto cr = C.Rows(ii, ii + M_block).Cols(jj, jj + N_block);
+                    EvalMatMatMultiplyDouble(ar, br, cr);
                     // multiply_tiles_packedB_SIMD(a, b, C, ii, jj, kk, M_block, N_block, K_block);
                 }
+            }
+        }
     };
 
+    template <typename MA, typename MB, typename MC>
+    inline void EvalMatMatMultiplyDouble_Transposed(const MA &a, const MB &b, MC &C)
+    {
+
+        for (size_t i = 0; i < a.nRows(); ++i)
+        {
+
+            for (size_t j = 0; j < b.nCols(); ++j)
+            {
+                for (size_t k = 0; k < a.nCols(); ++k)
+                {
+                    C(i, j) += a(i, k) * b(k, j); // <--- fixed
+                }
+            }
+        }
+    };
+    template <typename MA, typename MB, typename MC>
+    inline void EvalMatMatMultiplyDouble(const MA &a, const MB &b, MC &C)
+    {
+
+        for (size_t i = 0; i < a.nRows(); ++i)
+        {
+            for (size_t k = 0; k < a.nCols(); ++k)
+            {
+                for (size_t j = 0; j < b.nCols(); ++j)
+                {
+                    C(i, j) += a(i, k) * b(k, j); // <--- fixed
+                }
+            }
+        }
+    };
 } // namespace bla_ga
 
 #endif // FILE_MAT_EXPRESSION_SPECIALIZATION
