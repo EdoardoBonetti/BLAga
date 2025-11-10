@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "matrixexpression.hpp"
-#include "matrix_fwd.hpp"
+// #include "matrix_fwd.hpp"
 #include <ostream>
 
 namespace bla_ga
@@ -43,9 +43,9 @@ namespace bla_ga
       else
         dist = nrows;
 
-      for (size_t j = 0; j < ncols; j++)
-        for (size_t i = 0; i < nrows; i++)
-          data[Index(i, j)] = _data[Index(i, j)];
+      // for (size_t j = 0; j < ncols; j++)
+      //   for (size_t i = 0; i < nrows; i++)
+      //     data[Index(i, j)] = _data[Index(i, j)];
     }
 
     MatrixView(size_t _nrows, size_t _ncols, size_t _dist, T *_data)
@@ -154,6 +154,9 @@ namespace bla_ga
       std::fill_n(data, nrows * ncols, val);
     }
 
+    Matrix(size_t nrows, size_t ncols, T *data)
+        : MatrixView<T, ORD>(nrows, ncols, data) {}
+
     Matrix(const Matrix &m)
         : Matrix(m.nRows(), m.nCols())
     {
@@ -183,6 +186,16 @@ namespace bla_ga
     {
 
       size_t dist = nrows;
+      for (size_t j = 0; j < ncols; j++)
+        for (size_t i = 0; i < nrows; i++)
+          data[Index(i, j)] = m2(i, j);
+      return *this;
+    }
+
+    // Copy from a matrixview
+    template <typename T2, ORDERING ORD2>
+    Matrix &operator=(const MatrixView<T2, ORD2> &m2)
+    {
       for (size_t j = 0; j < ncols; j++)
         for (size_t i = 0; i < nrows; i++)
           data[Index(i, j)] = m2(i, j);
@@ -237,7 +250,41 @@ namespace bla_ga
       else
         return MatrixView<T, ORD>(j - i + 1, ncols, nrows, data + i * ncols);
     }
+
+    // Transpose data : Get the actual transpose of the matrix
+    Matrix<T, ORD> Transposed() const
+    {
+      T *data2 = new T[nrows * ncols];
+      auto m2 = Matrix(ncols, nrows, data2);
+      for (size_t i = 0; i < ncols; i++)
+        for (size_t j = 0; j < nrows; j++)
+          m2(i, j) = data[Index(j, i)];
+
+      return m2;
+    }
   };
+
+  template <typename MB, typename T = double>
+  inline Matrix<T, RowMajor> PackTransposedBlock(
+      const MB &b,
+      size_t kk, size_t jj,
+      size_t K_block, size_t N_block)
+  {
+
+    // Create a row-major matrix with N_block rows and K_block cols
+    Matrix<T, RowMajor> packed(N_block, K_block);
+
+    // Copy with transposition semantics: packed(j, k) = b(kk + k, jj + j)
+    for (size_t j = 0; j < N_block; ++j)
+    {
+      for (size_t k = 0; k < K_block; ++k)
+      {
+        packed(j, k) = b(kk + k, jj + j);
+      }
+    }
+
+    return packed; // NRVO will avoid extra copy
+  }
 
   /*------------operator<<------------*/
   template <typename... Args>

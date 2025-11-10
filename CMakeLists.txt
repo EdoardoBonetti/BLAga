@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.20)
 project(BLAga)
 
 # Set default CMAKE_BUILD_TYPE to RelWithDebInfo if not specified
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build." FORCE)
-endif()
 
 
 set(CMAKE_CXX_STANDARD 20)
@@ -16,7 +13,11 @@ endif()
 # -----------------------------
 # General compile setup
 # -----------------------------
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -O1 -ffast-math -ffp-contract=fast -funroll-loops -ftree-vectorize -flto  -mcpu=apple-m1")
+set(CMAKE_BUILD_TYPE Release)
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -ffast-math -march=armv8.4-a -mcpu=apple-m1 \
+    -ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer \
+    -fstrict-aliasing -flto -DNDEBUG")
 include_directories(src concurrentqueue amx cpp_demos)
 
 add_subdirectory(cpp_demos)

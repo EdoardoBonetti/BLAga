@@ -1,76 +1,74 @@
 #include <iostream>
+#include <vector>
 #include <chrono>
-#include "matrix.hpp"
-#include "matrixexpression.hpp"
-
-#include "simd.h"
+#include "matrix.hpp" // your Matrix class
+#include "matrixexpressionspecialization.hpp"
 
 using namespace bla_ga;
+using namespace std::chrono;
 
-template <size_t BS, size_t RS, typename T = double>
-void benchmark_simd(int n)
-
-    template <size_t BS, size_t RS, typename T = double>
-    void gemm_simd2(const Matrix<T> &A, const Matrix<T> &B, Matrix<T> &C)
+// Simple timing function
+template <typename F>
+double timeit(F func, int repeats = 3)
 {
-    size_t M = A.nRows();
-    size_t N = B.nCols();
-    size_t K = A.nCols();
-
-    for (size_t ii = 0; ii < M; ii += BS)
-        for (size_t kk = 0; kk < K; kk += BS)
-            for (size_t jj = 0; jj < N; jj += BS)
-                for (size_t i = ii; i < std::min(ii + BS, M); i += RS)
-                    for (size_t j = jj; j < std::min(jj + BS, N); j += RS)
-                    {
-                        size_t tileM = std::min(RS, M - i);
-                        size_t tileN = std::min(RS, N - j);
-
-                        // SIMD tile: ceil(tileN/2)
-                        SIMD<double, 2> cloc[RS][(RS + 1) / 2];
-                        for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                            for (size_t jj2 = 0; jj2 < (tileN + 1) / 2; ++jj2)
-                                cloc[ii2][jj2] = SIMD<double, 2>(0.0);
-
-                        // accumulate
-                        for (size_t k = kk; k < std::min(kk + BS, K); ++k)
-                        {
-                            for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                            {
-                                SIMD<double, 2> aval(A(i + ii2, k));
-
-                                for (size_t jj2 = 0; jj2 < tileN; jj2 += 2)
-                                {
-                                    size_t n_valid = std::min<size_t>(2, tileN - jj2);
-
-                                    // Compare indices with scalar for mask
-                                    SIMD<int64_t, 2> indices = bla_ga::IndexSequence<int64_t, 2>();
-                                    SIMD<mask64, 2> mask = indices < n_valid;
-
-                                    SIMD<double, 2> bvec(&B(k, j + jj2), mask);
-                                    cloc[ii2][jj2 / 2] += aval * bvec;
-                                }
-                            }
-                        }
-
-                        // store back
-                        for (size_t ii2 = 0; ii2 < tileM; ++ii2)
-                            for (size_t jj2 = 0; jj2 < tileN; jj2 += 2)
-                            {
-                                size_t n_valid = std::min<size_t>(2, tileN - jj2);
-                                SIMD<int64_t, 2> indices = bla_ga::IndexSequence<int64_t, 2>();
-                                SIMD<mask64, 2> mask = indices < n_valid;
-
-                                cloc[ii2][jj2 / 2].Store(&C(i + ii2, j + jj2), mask);
-                            }
-                    }
+    double best_time = 1e9;
+    for (int r = 0; r < repeats; ++r)
+    {
+        auto start = high_resolution_clock::now();
+        func();
+        auto end = high_resolution_clock::now();
+        double t = duration<double>(end - start).count();
+        if (t < best_time)
+            best_time = t;
+    }
+    return best_time;
 }
 
-int main()
+// Sweep different block sizes
+void tune_block_sizes(size_t M, size_t K, size_t N)
 {
-    int n = 2501; // matrix size
+    std::vector<double> A_data(M * K, 1.0);
+    std::vector<double> B_data(K * N, 1.0);
+    std::vector<double> C_data(M * N, 0.0);
 
-    benchmark_simd<128, 8>(n);
+    Matrix<double> A(M, K, A_data.data());
+    Matrix<double> B(K, N, B_data.data());
+    Matrix<double> C(M, N, C_data.data());
 
-    return 0;
+    // candidate block sizes (tunable)
+    std::vector<size_t> block_sizes = {8, 16, 32, 64};
+
+    double best_gflops = 0;
+    size_t best_BM = 0, best_BK = 0, best_BN = 0;
+
+    for (size_t BM : block_sizes)
+        for (size_t BK : block_sizes)
+            for (size_t BN : block_sizes)
+            {
+                // Reset C
+                std::fill(C_data.begin(), C_data.end(), 0.0);
+
+                auto t = timeit([&]
+                                {
+                                    bla_ga::SIMDEvalMatMatMultiplyDouble(A, B, C, BM, BK, BN); // you will need to overload function to accept BM,BK,BN
+                                });
+
+                double gflops = 2.0 * M * K * N / (t * 1e9);
+
+                std::cout << "BM=" << BM << " BK=" << BK << " BN=" << BN
+                          << " | Time=" << t << " s | GFLOPS=" << gflops << "\n";
+
+                if (gflops > best_gflops)
+                {
+                    best_gflops = gflops;
+                    best_BM = BM;
+                    best_BK = BK;
+                    best_BN = BN;
+                }
+            }
+
+    std::cout << "Best block sizes: BM=" << best_BM
+              << " BK=" << best_BK
+              << " BN=" << best_BN
+              << " | GFLOPS=" << best_gflops << "\n";
 }

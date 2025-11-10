@@ -150,7 +150,12 @@ namespace bla_ga
   {
     return SIMD<double, 2>(vbslq_f64(vreinterpretq_u64_s64(mask.Val()), b.Val(), c.Val()));
   }
-
+  // Horizontal sum for SIMD<double,2> (NEON)
+  inline double HSum(const bla_ga::SIMD<double, 2> &a)
+  {
+    float64x2_t v = a.Val();
+    return vgetq_lane_f64(v, 0) + vgetq_lane_f64(v, 1);
+  }
 } // namespace bla_ga
 
 #endif // SIMD_ARM64_H
