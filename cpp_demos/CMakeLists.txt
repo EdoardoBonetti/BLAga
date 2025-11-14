@@ -5,7 +5,11 @@ target_sources (demo_matrix PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp
  
 
 # optimization flags O3 and for math library
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}   -march=native")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
+
+
+add_executable (mkbench mkbench.cpp)
+target_sources (mkbench PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)
 
 add_executable (dummytest dummytest.cpp)
 target_sources (dummytest PUBLIC ../src/matrix.hpp ../src/matrixexpression.hpp)

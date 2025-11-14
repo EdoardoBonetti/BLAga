@@ -1,8 +1,9 @@
 
-import BLAga
+import BLAga.bla as bla
 
-v = BLAga.Vector(10)
-v[:] = 5.0
+v = bla.Vector(10)
+v[1:3] = 5.0
+print(v)
 
 view = v[2:8:2]
 print(view)   # should print 5.0, 5.0, 5.0
@@ -11,7 +12,7 @@ print(v[2])   # should print 42, confirming shared memory
 
 
 
-from BLAga.bla import Vector as blaVector
+from BLAga import Vector as blaVector
 from ngsolve import Vector as ngVector
 
 

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+
+
 #import pytest
 
-from  BLAga.bla import Vector as blaVector
+from  BLAga import Vector as blaVector
 from ngsolve import Vector as ngVector
 
-from BLAga.bla import Matrix as blaMatrix
+from BLAga import Matrix as blaMatrix
 from ngsolve import Matrix as ngMatrix
 import numpy as np
 

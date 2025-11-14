@@ -11,10 +11,11 @@ using bla_ga::RowMajor;
 int main()
 {
     // size_t N = 2 * 1023;
-    size_t N = 2 * 1023;
+    size_t N = 2 * 1024;
     std::cout << "Matrix size: " << N << " x " << N << std::endl;
     Matrix<double, RowMajor> A(N, N);
     Matrix<double, RowMajor> B(N, N);
+    Matrix<double, RowMajor> C(N, N, 0.0);
 
     for (int j = 0; j < N; j++)
         for (int i = 0; i < N; i++)
@@ -24,7 +25,7 @@ int main()
         }
 
     auto start = std::chrono::high_resolution_clock::now();
-    Matrix<double, RowMajor> C(A * B);
+    bla_ga::EvalMatMatMultiplyDouble2(A, B, C);
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << C(0, 0) << " " << C(N - 1, N - 1) << std::endl;
 

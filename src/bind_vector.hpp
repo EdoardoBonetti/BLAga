@@ -1,9 +1,11 @@
 #pragma once
+
 #include <pybind11/pybind11.h>
 #include <sstream>
 #include "vector.hpp"
 
 namespace py = pybind11;
+
 using namespace bla_ga;
 
 template <typename T>

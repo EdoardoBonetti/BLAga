@@ -110,6 +110,9 @@ namespace bla_ga
     }
     SIMD(double x) : val(vdupq_n_f64(x)) {}
 
+    // from a pointer
+    SIMD(const double *p) { val = vld1q_f64(p); }
+
     static SIMD<double, 2> set(double a, double b)
     {
       return SIMD<double, 2>(a, b);
@@ -119,7 +122,27 @@ namespace bla_ga
     static constexpr int Size() { return 2; }
 
     void Store(double *p) const { vst1q_f64(p, val); }
+
+    double operator[](size_t i) const
+    {
+      return reinterpret_cast<const double *>(&val)[i];
+    }
+
+    double &operator[](size_t i)
+    {
+      return reinterpret_cast<double *>(&val)[i];
+    }
   };
+
+  /// Swaps the two elements of the SIMD register.
+  /// This is a NEON instruction, so it is very fast.
+  /// It is equivalent to std::swap(a[0], a[1]) but much faster.
+
+  // Transpose
+  inline SIMD<double, 2> Swap(const SIMD<double, 2> &a)
+  {
+    return SIMD<double, 2>(vtrn1q_f64(a.Val(), a.Val()));
+  }
 
   // Arithmetic
   inline SIMD<double, 2> operator+(const SIMD<double, 2> &a, const SIMD<double, 2> &b)
@@ -137,10 +160,21 @@ namespace bla_ga
     return SIMD<double, 2>(vmulq_f64(a.Val(), b.Val()));
   }
 
+  // mult by scalar
+  inline SIMD<double, 2> operator*(double s, const SIMD<double, 2> &b)
+  {
+    return SIMD<double, 2>(vmulq_n_f64(b.Val(), s));
+  }
+
   // Fused multiply-add
   inline SIMD<double, 2> FMA(const SIMD<double, 2> &a, const SIMD<double, 2> &b, const SIMD<double, 2> &c)
   {
     return SIMD<double, 2>(vfmaq_f64(c.Val(), a.Val(), b.Val()));
+  }
+
+  inline SIMD<double, 2> FMA(const SIMD<double, 2> &a, double b, const SIMD<double, 2> &c)
+  {
+    return SIMD<double, 2>(vfmaq_n_f64(c.Val(), a.Val(), b));
   }
 
   // Select (mask ? b : c)
@@ -156,6 +190,9 @@ namespace bla_ga
     float64x2_t v = a.Val();
     return vgetq_lane_f64(v, 0) + vgetq_lane_f64(v, 1);
   }
+
+  // Outer Product a, b -> c0 , c1
+
 } // namespace bla_ga
 
 #endif // SIMD_ARM64_H

@@ -22,41 +22,41 @@ void bind_matrix(py::module &m, const char *classname)
         .def("Cols", &Matrix<T>::Cols, py::return_value_policy::reference_internal)
         .def("__getitem__", [](Matrix<T> &m, std::pair<int, int> idx)
              {
-                 int i = idx.first < 0 ? idx.first + m.nRows() : idx.first;
-                 int j = idx.second < 0 ? idx.second + m.nCols() : idx.second;
-                 return m(i,j); })
+                  int i = idx.first < 0 ? idx.first + m.nRows() : idx.first;
+                  int j = idx.second < 0 ? idx.second + m.nCols() : idx.second;
+                  return m(i,j); })
         .def("__setitem__", [](Matrix<T> &m, std::pair<int, int> idx, T val)
              {
-                 int i = idx.first < 0 ? idx.first + m.nRows() : idx.first;
-                 int j = idx.second < 0 ? idx.second + m.nCols() : idx.second;
-                 m(i,j) = val; })
+                  int i = idx.first < 0 ? idx.first + m.nRows() : idx.first;
+                  int j = idx.second < 0 ? idx.second + m.nCols() : idx.second;
+                  m(i,j) = val; })
         .def("__add__", [](Matrix<T> &self, Matrix<T> &other)
              { return Matrix<T>(self + other); })
 
         .def("__mul__", [](Matrix<T> &self, py::object other)
              {
-            if (py::isinstance<Matrix<T>>(other))
-            {
-                Matrix<T> &m = other.cast<Matrix<T>&>();
-                return Matrix<T>(self * m); // matrix multiplication
-            }
-            else
-            {
-                T scal = other.cast<T>();
-                return Matrix<T>(scal * self); // scalar multiplication
-            } })
+             if (py::isinstance<Matrix<T>>(other))
+             {
+                 Matrix<T> &m = other.cast<Matrix<T>&>();
+                 return Matrix<T>(self * m); // matrix multiplication
+             }
+             else
+             {
+                 T scal = other.cast<T>();
+                 return Matrix<T>(scal * self); // scalar multiplication
+             } })
         .def("__rmul__", [](Matrix<T> &self, py::object other)
              {
-            if (py::isinstance<Matrix<T>>(other))
-            {
-                Matrix<T> &m = other.cast<Matrix<T>&>();
-                return Matrix<T>(m * self);
-            }
-            else
-            {
-                T scal = other.cast<T>();
-                return Matrix<T>(scal * self);
-            } })
+             if (py::isinstance<Matrix<T>>(other))
+             {
+                 Matrix<T> &m = other.cast<Matrix<T>&>();
+                 return Matrix<T>(m * self);
+             }
+             else
+             {
+                 T scal = other.cast<T>();
+                 return Matrix<T>(scal * self);
+             } })
 
         .def("__mul__", [](Matrix<T> &self, Matrix<T> &other)
              { return Matrix<T>(self * other); })
@@ -66,9 +66,9 @@ void bind_matrix(py::module &m, const char *classname)
 
         .def("__str__", [](const Matrix<T> &m)
              {
-                 std::stringstream ss;
-                 ss << m;
-                 return ss.str(); });
+                  std::stringstream ss;
+                  ss << m;
+                  return ss.str(); });
 }
 
 template <typename T>
@@ -82,29 +82,29 @@ void bind_matrixview(py::module &m, const char *classname)
         //.def("Col", &MatrixView<T>::Col, py::return_value_policy::reference_internal)
         .def("__getitem__", [](MatrixView<T> &mv, std::pair<int, int> idx)
              {
-            int i = idx.first < 0 ? idx.first + mv.nRows() : idx.first;
-            int j = idx.second < 0 ? idx.second + mv.nCols() : idx.second;
-            if(i < 0 || i >= mv.nRows() || j < 0 || j >= mv.nCols())
-                throw py::index_error("MatrixView index out of range");
-            return mv(i, j); })
+             int i = idx.first < 0 ? idx.first + mv.nRows() : idx.first;
+             int j = idx.second < 0 ? idx.second + mv.nCols() : idx.second;
+             if(i < 0 || i >= mv.nRows() || j < 0 || j >= mv.nCols())
+                 throw py::index_error("MatrixView index out of range");
+             return mv(i, j); })
         .def("__setitem__", [](MatrixView<T> &mv, std::pair<int, int> idx, T val)
              {
-            int i = idx.first < 0 ? idx.first + mv.nRows() : idx.first;
-            int j = idx.second < 0 ? idx.second + mv.nCols() : idx.second;
-            if(i < 0 || i >= mv.nRows() || j < 0 || j >= mv.nCols())
-                throw py::index_error("MatrixView index out of range");
-            mv(i, j) = val; })
+             int i = idx.first < 0 ? idx.first + mv.nRows() : idx.first;
+             int j = idx.second < 0 ? idx.second + mv.nCols() : idx.second;
+             if(i < 0 || i >= mv.nRows() || j < 0 || j >= mv.nCols())
+                 throw py::index_error("MatrixView index out of range");
+             mv(i, j) = val; })
         .def("__repr__", [](const MatrixView<T> &mv)
              {
-            std::ostringstream ss;
-            for (size_t i = 0; i < mv.nRows(); ++i)
-            {
-                if (i > 0) ss << "\n";
-                for (size_t j = 0; j < mv.nCols(); ++j)
-                {
-                    if (j > 0) ss << ", ";
-                    ss << mv(i,j);
-                }
-            }
-            return ss.str(); });
+             std::ostringstream ss;
+             for (size_t i = 0; i < mv.nRows(); ++i)
+             {
+                 if (i > 0) ss << "\n";
+                 for (size_t j = 0; j < mv.nCols(); ++j)
+                 {
+                     if (j > 0) ss << ", ";
+                     ss << mv(i,j);
+                 }
+             }
+             return ss.str(); });
 }

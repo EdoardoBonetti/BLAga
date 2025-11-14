@@ -1,45 +1,37 @@
 #include <iostream>
+#include <chrono>
+#include "matrix.hpp"
+#include "vector.hpp"
+#include "matrixexpression.hpp"
+#include "vectorexpression.hpp"
 
-#include <vector.hpp>
-
-namespace bla = bla_ga;
-void test_vector_range()
-{
-    size_t n = 2;
-    bla_ga::Vector<double> x(n);
-    for (size_t i = 0; i < n; i++)
-    {
-        x(i) = i;
-    }
-
-    // print n print x
-    std::cout << "n = " << n << std::endl;
-    std::cout << "x = " << x << std::endl;
-
-    for (size_t end = 1; end < n + 1; end++)
-    {
-        for (size_t begin = 0; begin <= end; begin++)
-        {
-            bla_ga::Vector<double> y(end - begin);
-            size_t counter = 0;
-            for (size_t i = begin; i < end; i++)
-            {
-                y(counter) = i;
-                counter = counter + 1;
-            };
-            std::cout << "Begin : " << begin << " , end : " << end << std::endl;
-            std::cout << "y = " << y << std::endl;
-            std::cout << "Range(begin, end)"
-                      << x.Range(begin, end) << std::endl
-                      << std::endl;
-
-            // in case it fails show
-        }
-    }
-}
+using bla_ga::Matrix;
+using bla_ga::RowMajor;
 
 int main()
 {
-    test_vector_range();
+    // size_t N = 2 * 1023;
+    size_t N = 2 * 1024;
+    std::cout << "Matrix size: " << N << " x " << N << std::endl;
+    Matrix<double, RowMajor> A(N, N);
+    Matrix<double, RowMajor> B(N, N);
+    Matrix<double, RowMajor> C(N, N, 0.0);
+
+    for (int j = 0; j < N; j++)
+        for (int i = 0; i < N; i++)
+        {
+            A(i, j) = 1;
+            B(i, j) = 1;
+        }
+
+    auto start = std::chrono::high_resolution_clock::now();
+    bla_ga::SIMDEvalMatMatMultiplyDouble(A, B, C);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << C(0, 0) << " " << C(N - 1, N - 1) << std::endl;
+
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+
+    double gflops = 2 * N * N * N / (std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() * 1e6);
+    std::cout << "GFLOPS: " << gflops << std::endl;
     return 0;
 }

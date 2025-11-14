@@ -1,14 +1,16 @@
+
+
 import time
 import matplotlib.pyplot as plt
-from BLAga.bla import Matrix  # Your pybind11 wrapper
+from BLAga import Matrix , GEMM   # Your pybind11 wrapper
 #from ngsolve import Matrix  # Using ngsolve's Matrix for demonstration
-sizes = [255, 511, 1023, 2047, 3000 ]
+sizes = [256 , 512, 1024]#, 2048]
 data = []
 
 for n in sizes:
     A = Matrix(n, n)
     B = Matrix(n, n)
-    C = Matrix(n, n)
+    C = Matrix(n, n, 0.0)
 
 
     # Initialize deterministically
@@ -20,7 +22,8 @@ for n in sizes:
     iterations = 1
     start = time.time()
     for _ in range(iterations):
-        C = A * B
+        #C = A * B
+        GEMM(A, B, C)
     end = time.time()
 
     elapsed = (end - start) / iterations

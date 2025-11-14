@@ -45,3 +45,46 @@ for M, P, N in zip(M_sizes, P_sizes, N_sizes):
         print(f"Matrix multiplication correct for sizes M={M}, P={P}, N={N}")
     else:
         print(f"Matrix multiplication incorrect for sizes M={M}, P={P}, N={N}")
+
+
+# create 2 random matrix 2048 x 2048 and multiply them
+
+N = 2048
+A = blaMatrix(N, N)
+B = blaMatrix(N, N)
+C = blaMatrix(N, N)
+
+ngA = ngsMatrix(N, N)
+ngB = ngsMatrix(N, N)
+ngC = ngsMatrix(N, N)
+
+for j in range(N):
+    for i in range(N):
+        val = np.random.rand()
+        A[i, j] = val
+        B[i, j] = val**2
+        ngA[i, j] = val
+        ngB[i, j] = val**2
+
+start = time()
+C = A * B
+end = time()
+print(f"Matrix multiplication took {end - start} seconds")
+
+start = time()
+ngC = ngA * ngB
+end = time()
+print(f"Matrix multiplication took {end - start} seconds")
+
+correct = True
+for j in range(N):
+    for i in range(N):
+        if abs(ngC[i, j] - C[i, j]) > 1e-8:
+            correct = False
+            print(f"Mismatch at C[{i},{j}]: ngsolve={ngC[i,j]}, BLAga={C[i,j]}")
+            break
+
+if correct:
+    print("Matrix multiplication correct")
+else:
+    print("Matrix multiplication incorrect")

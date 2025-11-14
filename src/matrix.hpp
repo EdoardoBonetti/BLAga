@@ -252,12 +252,12 @@ namespace bla_ga
     }
 
     // Transpose data : Get the actual transpose of the matrix
-    Matrix<T, ORD> Transposed() const
+    inline Matrix<T, ORD> Transposed() const
     {
       T *data2 = new T[nrows * ncols];
       auto m2 = Matrix(ncols, nrows, data2);
-      for (size_t i = 0; i < ncols; i++)
-        for (size_t j = 0; j < nrows; j++)
+      for (size_t j = 0; j < nrows; j++)
+        for (size_t i = 0; i < ncols; i++)
           m2(i, j) = data[Index(j, i)];
 
       return m2;
@@ -271,19 +271,18 @@ namespace bla_ga
       size_t K_block, size_t N_block)
   {
 
-    // Create a row-major matrix with N_block rows and K_block cols
-    Matrix<T, RowMajor> packed(N_block, K_block);
-
-    // Copy with transposition semantics: packed(j, k) = b(kk + k, jj + j)
-    for (size_t j = 0; j < N_block; ++j)
     {
-      for (size_t k = 0; k < K_block; ++k)
-      {
-        packed(j, k) = b(kk + k, jj + j);
-      }
-    }
+      // Create a row-major matrix with N_block rows and K_block cols
+      Matrix<T, RowMajor> packed(N_block, K_block);
 
-    return packed; // NRVO will avoid extra copy
+      // Copy with transposition semantics: packed(j, k) = b(kk + k, jj + j)
+
+      for (size_t k = 0; k < K_block; ++k)
+        for (size_t j = 0; j < N_block; ++j)
+          packed(j, k) = b(kk + k, jj + j);
+
+      return packed;
+    } // NRVO will avoid extra copy
   }
 
   /*------------operator<<------------*/

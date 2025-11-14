@@ -1,4 +1,7 @@
-from .bla import Vector
-from .bla import Matrix
+#from .bla import Vector
+#from .bla import Matrix
+#
+print ("importing BLAga no flags")
 
-print ("importing BLAga")
+
+from .bla import Vector, Matrix, GEMM
