@@ -35,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/neonpunk.css?v=1302bdc3" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -58,6 +59,12 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'encript';</script>
+    <script src="_static/copy-logo.js?v=798398a5"></script>
+    <script src="_static/other.js?v=8bd6b487"></script>
+    <script src="_static/costum.js?v=0d24bc44"></script>
+    <script src="_static/cursor-effect.js?v=8389873e"></script>
+    <script src="_static/expanding-ball.js?v=387abb5d"></script>
+    <script src="_static/cursor-hearts.js?v=dd8bffa4"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -355,407 +362,109 @@ document.write(`
                   
   <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Alba&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Ari&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Paolo&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Dani&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Grazia&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Moreno&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Edo&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Flavio&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Sonia&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Pippo&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Marci&quot;</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-    <span class="s2">&quot;Andrea&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Silvia&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Giada&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Johnny&quot;</span><span class="p">,</span>
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 1. Participants</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Alba&quot;</span><span class="p">,</span><span class="s2">&quot;Ari&quot;</span><span class="p">,</span><span class="s2">&quot;Paolo&quot;</span><span class="p">,</span><span class="s2">&quot;Dani&quot;</span><span class="p">,</span><span class="s2">&quot;Grazia&quot;</span><span class="p">,</span><span class="s2">&quot;Moreno&quot;</span><span class="p">,</span><span class="s2">&quot;Edo&quot;</span><span class="p">,</span><span class="s2">&quot;Flavio&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Sonia&quot;</span><span class="p">,</span><span class="s2">&quot;Pippo&quot;</span><span class="p">,</span><span class="s2">&quot;Marci&quot;</span><span class="p">,</span><span class="s2">&quot;Andrea&quot;</span><span class="p">,</span><span class="s2">&quot;Silvia&quot;</span><span class="p">,</span><span class="s2">&quot;Giada&quot;</span><span class="p">,</span><span class="s2">&quot;Johnny&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Nonna Ilda&quot;</span><span class="p">,</span><span class="s2">&quot;Nonna Elena&quot;</span><span class="p">]</span>
 
-    <span class="s2">&quot;Nonna Ilda&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Nonna Elena&quot;</span>
-<span class="p">]</span>
+<span class="n">codes_unshuffled</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PK94&quot;</span><span class="p">,</span><span class="s2">&quot;GT33&quot;</span><span class="p">,</span><span class="s2">&quot;MN23&quot;</span><span class="p">,</span><span class="s2">&quot;PL87&quot;</span><span class="p">,</span><span class="s2">&quot;RC21&quot;</span><span class="p">,</span><span class="s2">&quot;VR46&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;PC45&quot;</span><span class="p">,</span><span class="s2">&quot;RM28&quot;</span><span class="p">,</span><span class="s2">&quot;FE12&quot;</span><span class="p">,</span><span class="s2">&quot;CT36&quot;</span><span class="p">,</span><span class="s2">&quot;FI09&quot;</span><span class="p">,</span><span class="s2">&quot;TN57&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;BS78&quot;</span><span class="p">,</span><span class="s2">&quot;NA34&quot;</span><span class="p">,</span><span class="s2">&quot;TO67&quot;</span><span class="p">,</span><span class="s2">&quot;MD85&quot;</span><span class="p">,</span><span class="s2">&quot;ME94&quot;</span><span class="p">]</span>
 
-
-
-
-<span class="n">codes_unshuffled</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;PK94&quot;</span><span class="p">,</span> <span class="s2">&quot;GT33&quot;</span><span class="p">,</span> <span class="s2">&quot;MN23&quot;</span><span class="p">,</span> <span class="s2">&quot;PL87&quot;</span><span class="p">,</span> <span class="s2">&quot;RC21&quot;</span><span class="p">,</span> <span class="s2">&quot;VR46&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PC45&quot;</span><span class="p">,</span> <span class="s2">&quot;RM28&quot;</span><span class="p">,</span> <span class="s2">&quot;FE12&quot;</span><span class="p">,</span> <span class="s2">&quot;CT36&quot;</span><span class="p">,</span> <span class="s2">&quot;FI09&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;TN57&quot;</span><span class="p">,</span> <span class="s2">&quot;BS78&quot;</span><span class="p">,</span> <span class="s2">&quot;NA34&quot;</span><span class="p">,</span> <span class="s2">&quot;TO67&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;MD85&quot;</span><span class="p">,</span> <span class="s2">&quot;ME94&quot;</span>
-<span class="p">]</span>
-
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-
-<span class="c1"># shuffle the codes</span>
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 2. Shuffle codes but assign row-wise</span>
+<span class="c1"># -----------------------------</span>
 <span class="n">codes_shuffled</span> <span class="o">=</span> <span class="n">codes_unshuffled</span><span class="p">[:]</span>
 <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">codes_shuffled</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dataframe from the dictionary</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">codes_shuffled</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names_last_year_str</span> <span class="o">=</span> <span class="s2">&quot;Sonia&gt;Nonna Ilda&gt;Silvia&gt;Pippo&gt;Paolo&gt;Edo&gt;Flavio&gt;Moreno&gt;Nonna Elena&gt;Grazia&gt;Ari&gt;Johnny&gt;Andrea&gt;Dani&gt;Marci&gt;Giada&gt;Alba &quot;</span>
-<span class="n">names_last_year</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names_last_year_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">names_last_year</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_last_year</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Sonia&#39;, &#39;Nonna Ilda&#39;, &#39;Silvia&#39;, &#39;Pippo&#39;, &#39;Paolo&#39;, &#39;Edo&#39;, &#39;Flavio&#39;, &#39;Moreno&#39;, &#39;Nonna Elena&#39;, &#39;Grazia&#39;, &#39;Ari&#39;, &#39;Johnny&#39;, &#39;Andrea&#39;, &#39;Dani&#39;, &#39;Marci&#39;, &#39;Giada&#39;, &#39;Alba&#39;]
-17
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_cycle</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">last_year</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">codes_shuffled</span>  <span class="c1"># assign codes row by row (preserves mapping)</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 3. Last year assignment (fixed cycle)</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">names_last_year_str</span> <span class="o">=</span> <span class="s2">&quot;Sonia&gt;Nonna Ilda&gt;Silvia&gt;Pippo&gt;Paolo&gt;Edo&gt;Flavio&gt;Moreno&gt;Nonna Elena&gt;Grazia&gt;Ari&gt;Johnny&gt;Andrea&gt;Dani&gt;Marci&gt;Giada&gt;Alba&quot;</span>
+<span class="n">names_last_year</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names_last_year_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_cycle</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">last_year</span><span class="p">):</span>
     <span class="n">index_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">)}</span>
     <span class="n">last_year_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">index_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">last_year</span><span class="p">]</span>
-
-    <span class="n">cycle</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">cycle</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)):</span>
         <span class="n">current_index</span> <span class="o">=</span> <span class="n">last_year_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">next_index</span> <span class="o">=</span> <span class="n">last_year_indices</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">]</span>
+        <span class="n">next_index</span> <span class="o">=</span> <span class="n">last_year_indices</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)]</span>
         <span class="n">cycle</span><span class="p">[</span><span class="n">current_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_index</span>
-
     <span class="k">return</span> <span class="p">[</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cycle</span><span class="p">]</span>
 
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;last_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_cycle</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">names_last_year</span><span class="p">)</span>
 
-<span class="n">last_year</span> <span class="o">=</span> <span class="n">create_cycle</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">names_last_year</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;last_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_year</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 4. This year assignment (derangement)</span>
+<span class="c1"># -----------------------------</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">single_cycle_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:]</span>        <span class="c1"># copy</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="c1"># shuffle to avoid trivial cycles</span>
-    <span class="k">return</span> <span class="n">lst</span>          <span class="c1"># this list *is* the cycle order</span>
-                        <span class="c1"># lst[i] → lst[i+1], last → first</span>
+    <span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lst</span>
 
-
-<span class="n">this_year</span><span class="o">=</span> <span class="n">single_cycle_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+<span class="n">this_year</span> <span class="o">=</span> <span class="n">single_cycle_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_year</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">this_year</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Silvia&#39;, &#39;Paolo&#39;, &#39;Marci&#39;, &#39;Flavio&#39;, &#39;Nonna Ilda&#39;, &#39;Grazia&#39;, &#39;Andrea&#39;, &#39;Sonia&#39;, &#39;Alba&#39;, &#39;Nonna Elena&#39;, &#39;Pippo&#39;, &#39;Moreno&#39;, &#39;Johnny&#39;, &#39;Ari&#39;, &#39;Giada&#39;, &#39;Edo&#39;, &#39;Dani&#39;]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;last_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))):</span>
-        <span class="k">break</span>
-    <span class="n">this_year</span><span class="o">=</span> <span class="n">single_cycle_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+<span class="c1"># ensure nobody gets same as last year and nobody gets themselves</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;last_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))):</span>
+    <span class="n">this_year</span> <span class="o">=</span> <span class="n">single_cycle_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_year</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Regenerating...&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>code</th>
-      <th>last_year</th>
-      <th>this_year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Alba</td>
-      <td>VR46</td>
-      <td>Sonia</td>
-      <td>Silvia</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Ari</td>
-      <td>FI09</td>
-      <td>Johnny</td>
-      <td>Paolo</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Paolo</td>
-      <td>PL87</td>
-      <td>Edo</td>
-      <td>Marci</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Dani</td>
-      <td>MN23</td>
-      <td>Marci</td>
-      <td>Flavio</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Grazia</td>
-      <td>MD85</td>
-      <td>Ari</td>
-      <td>Nonna Ilda</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Moreno</td>
-      <td>BS78</td>
-      <td>Nonna Elena</td>
-      <td>Grazia</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Edo</td>
-      <td>PC45</td>
-      <td>Flavio</td>
-      <td>Andrea</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Flavio</td>
-      <td>NA34</td>
-      <td>Moreno</td>
-      <td>Sonia</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Sonia</td>
-      <td>GT33</td>
-      <td>Nonna Ilda</td>
-      <td>Alba</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Pippo</td>
-      <td>TN57</td>
-      <td>Paolo</td>
-      <td>Nonna Elena</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Marci</td>
-      <td>ME94</td>
-      <td>Giada</td>
-      <td>Pippo</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Andrea</td>
-      <td>PK94</td>
-      <td>Dani</td>
-      <td>Moreno</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Silvia</td>
-      <td>FE12</td>
-      <td>Pippo</td>
-      <td>Johnny</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Giada</td>
-      <td>RM28</td>
-      <td>Alba</td>
-      <td>Ari</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Johnny</td>
-      <td>CT36</td>
-      <td>Andrea</td>
-      <td>Giada</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>Nonna Ilda</td>
-      <td>RC21</td>
-      <td>Silvia</td>
-      <td>Edo</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>Nonna Elena</td>
-      <td>TO67</td>
-      <td>Grazia</td>
-      <td>Dani</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># read frpom the code using input</span>
-<span class="n">input_code</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your code: &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">StdinNotImplementedError</span><span class="g g-Whitespace">                  </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># read frpom the code using input</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">input_code</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your code: &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-<span class="nn">File ~/Library/Python/3.13/lib/python/site-packages/ipykernel/kernelbase.py:1259,</span> in <span class="ni">Kernel.raw_input</span><span class="nt">(self, prompt)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1257</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_stdin</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1258</span>     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;raw_input was called, but this frontend does not support input requests.&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1259</span>     <span class="k">raise</span> <span class="n">StdinNotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1260</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_request</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1261</span>     <span class="nb">str</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1262</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_parent_ident</span><span class="p">[</span><span class="s2">&quot;shell&quot;</span><span class="p">],</span>
-<span class="g g-Whitespace">   </span><span class="mi">1263</span>     <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">(</span><span class="s2">&quot;shell&quot;</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1264</span>     <span class="n">password</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1265</span> <span class="p">)</span>
-
-<span class="ne">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matched_names</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_code</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">matched_names</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ciao: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">matched_names</span><span class="p">)</span><span class="si">}</span><span class="s2">, devi fare un regalo a </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">matched_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;this_year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ciao: Moreno, devi fare un regalo a Nonna Ilda!
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-
-<span class="c1"># Build assignment dictionary</span>
-<span class="n">assignment_dict</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-    <span class="n">giftee</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span>
-    <span class="n">assignment_dict</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-        <span class="s2">&quot;giftee&quot;</span><span class="p">:</span> <span class="n">giftee</span>
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 5. Generate JSON</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">assignments</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">assignments</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;giftee&quot;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
     <span class="p">}</span>
 
-<span class="c1"># (Optional) Encode giftees to Base64 to hide them</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
-<span class="n">encoded_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">code</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;giftee&quot;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;giftee&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">assignment_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-<span class="p">}</span>
-
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 6. Save JSON for embedding</span>
+<span class="c1"># -----------------------------</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;assignments.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">encoded_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">assignments</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Optional: verify correct mapping</span>
+<span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">assignments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> ha il codice </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">code</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alba ha il codice VR46 
+Ari ha il codice BS78 
+Paolo ha il codice PL87 
+Dani ha il codice ME94 
+Grazia ha il codice RC21 
+Moreno ha il codice TN57 
+Edo ha il codice MD85 
+Flavio ha il codice TO67 
+Sonia ha il codice PK94 
+Pippo ha il codice GT33 
+Marci ha il codice FE12 
+Andrea ha il codice RM28 
+Silvia ha il codice MN23 
+Giada ha il codice FI09 
+Johnny ha il codice NA34 
+Nonna Ilda ha il codice CT36 
+Nonna Elena ha il codice PC45 
 </pre></div>
 </div>
 </div>
 </div>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Secret Santa 2025</title>
-<style>
-body { font-family: Arial; max-width: 500px; margin: 40px auto; }
-input,button { font-size: 18px; padding: 6px; }
-#result { margin-top: 20px; font-size: 20px; font-weight: bold; }
-</style>
-</head>
-<body>
-<h2>Secret Santa — Inserisci il tuo codice</h2>
-<input id="codeInput" type="text" placeholder="Es. AB10">
-<button onclick="checkCode()">Mostra destinatario</button>
-<div id="result"></div>
-<script>
-// Load JSON once at page load
-let assignments = {};
-
-fetch("assignments.json")
-    .then(response => response.json())
-    .then(data => assignments = data);
-
-function decodeBase64(str) {
-    return atob(str);
-}
-
-function checkCode() {
-    const code = document.getElementById("codeInput").value.trim();
-    const result = document.getElementById("result");
-
-    if (!assignments[code]) {
-        result.innerHTML = "<span style='color:red'>Codice non valido 😢</span>";
-        return;
-    }
-
-    const person = assignments[code]["name"];
-    const giftee = decodeBase64(assignments[code]["giftee"]);
-
-    result.innerHTML = `Ciao <b>${person}</b>! 🎁 Devi fare un regalo a <b style="color:green">${giftee}</b>!`;
-}
-</script>
-</body>
-</html>
 
     <script type="text/x-thebe-config">
     {
