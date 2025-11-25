@@ -36,47 +36,18 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
+# read frpom the code using input
+input_code = input("Enter your code: ").strip()
 
-# -----------------------------
-# 6. Participant decryption
-# -----------------------------
-
-user_key = input("\nEnter your short decryption key to reveal your giftee: ").strip()
-
-matched_giver = None
-for giver, (_, short_key) in [(g, (Gift_Receiver_encrypted[g], Decryption_Keys[g])) for g in Gift_Giver_not_encrypted]:
-    if short_key == user_key:
-        matched_giver = giver
-        break
-
-if matched_giver is None:
-    print("No assignment found. Wrong key.")
-    exit()
-
-encrypted_payload = Gift_Receiver_encrypted[matched_giver]
-
-# Decrypt
-
-decrypted = cipher.decrypt(encrypted_payload.encode()).decode()
-key_in_file, receiver = decrypted.split(":")
-
-if key_in_file != user_key:
-    print("Key mismatch — possible tampering.")
-else:
-    print(f"You give a gift to: {receiver}")
 
 ------------------
 
 
 [31m---------------------------------------------------------------------------[39m
 [31mStdinNotImplementedError[39m                  Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 5[39m
-[32m      1[39m [38;5;66;03m# -----------------------------[39;00m
-[32m      2[39m [38;5;66;03m# 6. Participant decryption[39;00m
-[32m      3[39m [38;5;66;03m# -----------------------------[39;00m
-[32m----> [39m[32m5[39m user_key = [38;5;28;43minput[39;49m[43m([49m[33;43m"[39;49m[38;5;130;43;01m\n[39;49;00m[33;43mEnter your short decryption key to reveal your giftee: [39;49m[33;43m"[39;49m[43m)[49m.strip()
-[32m      7[39m matched_giver = [38;5;28;01mNone[39;00m
-[32m      8[39m [38;5;28;01mfor[39;00m giver, (_, short_key) [38;5;129;01min[39;00m [(g, (Gift_Receiver_encrypted[g], Decryption_Keys[g])) [38;5;28;01mfor[39;00m g [38;5;129;01min[39;00m Gift_Giver_not_encrypted]:
+[36mCell[39m[36m [39m[32mIn[8][39m[32m, line 2[39m
+[32m      1[39m [38;5;66;03m# read frpom the code using input[39;00m
+[32m----> [39m[32m2[39m input_code = [38;5;28;43minput[39;49m[43m([49m[33;43m"[39;49m[33;43mEnter your code: [39;49m[33;43m"[39;49m[43m)[49m.strip()
 
 [36mFile [39m[32m~/Library/Python/3.13/lib/python/site-packages/ipykernel/kernelbase.py:1259[39m, in [36mKernel.raw_input[39m[34m(self, prompt)[39m
 [32m   1257[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m._allow_stdin:

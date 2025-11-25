@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>&lt;no title&gt; &#8212; BLAga</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'encript';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/Blaga_logo.jpg" class="logo__image only-light" alt="BLAga - Home"/>
+    <script>document.write(`<img src="_static/Blaga_logo.jpg" class="logo__image only-dark" alt="BLAga - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to BLAga’s documentation!
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/EdoardoBonetti/BLAga" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/encript.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Alba&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ari&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Paolo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dani&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Grazia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Moreno&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Edo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Flavio&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sonia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pippo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Marci&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;Andrea&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Silvia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Giada&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Johnny&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;Nonna Ilda&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Nonna Elena&quot;</span>
+<span class="p">]</span>
+
+
+
+
+<span class="n">codes_unshuffled</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;PK94&quot;</span><span class="p">,</span> <span class="s2">&quot;GT33&quot;</span><span class="p">,</span> <span class="s2">&quot;MN23&quot;</span><span class="p">,</span> <span class="s2">&quot;PL87&quot;</span><span class="p">,</span> <span class="s2">&quot;RC21&quot;</span><span class="p">,</span> <span class="s2">&quot;VR46&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PC45&quot;</span><span class="p">,</span> <span class="s2">&quot;RM28&quot;</span><span class="p">,</span> <span class="s2">&quot;FE12&quot;</span><span class="p">,</span> <span class="s2">&quot;CT36&quot;</span><span class="p">,</span> <span class="s2">&quot;FI09&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TN57&quot;</span><span class="p">,</span> <span class="s2">&quot;BS78&quot;</span><span class="p">,</span> <span class="s2">&quot;NA34&quot;</span><span class="p">,</span> <span class="s2">&quot;TO67&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MD85&quot;</span><span class="p">,</span> <span class="s2">&quot;ME94&quot;</span>
+<span class="p">]</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="c1"># shuffle the codes</span>
+<span class="n">codes_shuffled</span> <span class="o">=</span> <span class="n">codes_unshuffled</span><span class="p">[:]</span>
+<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">codes_shuffled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dataframe from the dictionary</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">codes_shuffled</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names_last_year_str</span> <span class="o">=</span> <span class="s2">&quot;Sonia&gt;Nonna Ilda&gt;Silvia&gt;Pippo&gt;Paolo&gt;Edo&gt;Flavio&gt;Moreno&gt;Nonna Elena&gt;Grazia&gt;Ari&gt;Johnny&gt;Andrea&gt;Dani&gt;Marci&gt;Giada&gt;Alba &quot;</span>
+<span class="n">names_last_year</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names_last_year_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">names_last_year</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_last_year</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Sonia&#39;, &#39;Nonna Ilda&#39;, &#39;Silvia&#39;, &#39;Pippo&#39;, &#39;Paolo&#39;, &#39;Edo&#39;, &#39;Flavio&#39;, &#39;Moreno&#39;, &#39;Nonna Elena&#39;, &#39;Grazia&#39;, &#39;Ari&#39;, &#39;Johnny&#39;, &#39;Andrea&#39;, &#39;Dani&#39;, &#39;Marci&#39;, &#39;Giada&#39;, &#39;Alba&#39;]
+17
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_cycle</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">last_year</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="n">index_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">)}</span>
+    <span class="n">last_year_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">index_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">last_year</span><span class="p">]</span>
+
+    <span class="n">cycle</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">current_index</span> <span class="o">=</span> <span class="n">last_year_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">next_index</span> <span class="o">=</span> <span class="n">last_year_indices</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">]</span>
+        <span class="n">cycle</span><span class="p">[</span><span class="n">current_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_index</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cycle</span><span class="p">]</span>
+
+
+<span class="n">last_year</span> <span class="o">=</span> <span class="n">create_cycle</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">names_last_year</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;last_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_year</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">single_cycle_list</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">lst</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:]</span>        <span class="c1"># copy</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="c1"># shuffle to avoid trivial cycles</span>
+    <span class="k">return</span> <span class="n">lst</span>          <span class="c1"># this list *is* the cycle order</span>
+                        <span class="c1"># lst[i] → lst[i+1], last → first</span>
+
+
+<span class="n">this_year</span><span class="o">=</span> <span class="n">single_cycle_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_year</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">this_year</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Silvia&#39;, &#39;Paolo&#39;, &#39;Marci&#39;, &#39;Flavio&#39;, &#39;Nonna Ilda&#39;, &#39;Grazia&#39;, &#39;Andrea&#39;, &#39;Sonia&#39;, &#39;Alba&#39;, &#39;Nonna Elena&#39;, &#39;Pippo&#39;, &#39;Moreno&#39;, &#39;Johnny&#39;, &#39;Ari&#39;, &#39;Giada&#39;, &#39;Edo&#39;, &#39;Dani&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;last_year&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))):</span>
+        <span class="k">break</span>
+    <span class="n">this_year</span><span class="o">=</span> <span class="n">single_cycle_list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_year</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Regenerating...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>code</th>
+      <th>last_year</th>
+      <th>this_year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alba</td>
+      <td>VR46</td>
+      <td>Sonia</td>
+      <td>Silvia</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Ari</td>
+      <td>FI09</td>
+      <td>Johnny</td>
+      <td>Paolo</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Paolo</td>
+      <td>PL87</td>
+      <td>Edo</td>
+      <td>Marci</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Dani</td>
+      <td>MN23</td>
+      <td>Marci</td>
+      <td>Flavio</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Grazia</td>
+      <td>MD85</td>
+      <td>Ari</td>
+      <td>Nonna Ilda</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Moreno</td>
+      <td>BS78</td>
+      <td>Nonna Elena</td>
+      <td>Grazia</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Edo</td>
+      <td>PC45</td>
+      <td>Flavio</td>
+      <td>Andrea</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Flavio</td>
+      <td>NA34</td>
+      <td>Moreno</td>
+      <td>Sonia</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Sonia</td>
+      <td>GT33</td>
+      <td>Nonna Ilda</td>
+      <td>Alba</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Pippo</td>
+      <td>TN57</td>
+      <td>Paolo</td>
+      <td>Nonna Elena</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Marci</td>
+      <td>ME94</td>
+      <td>Giada</td>
+      <td>Pippo</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Andrea</td>
+      <td>PK94</td>
+      <td>Dani</td>
+      <td>Moreno</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Silvia</td>
+      <td>FE12</td>
+      <td>Pippo</td>
+      <td>Johnny</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Giada</td>
+      <td>RM28</td>
+      <td>Alba</td>
+      <td>Ari</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Johnny</td>
+      <td>CT36</td>
+      <td>Andrea</td>
+      <td>Giada</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Nonna Ilda</td>
+      <td>RC21</td>
+      <td>Silvia</td>
+      <td>Edo</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Nonna Elena</td>
+      <td>TO67</td>
+      <td>Grazia</td>
+      <td>Dani</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># read frpom the code using input</span>
+<span class="n">input_code</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your code: &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">StdinNotImplementedError</span><span class="g g-Whitespace">                  </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># read frpom the code using input</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">input_code</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your code: &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="nn">File ~/Library/Python/3.13/lib/python/site-packages/ipykernel/kernelbase.py:1259,</span> in <span class="ni">Kernel.raw_input</span><span class="nt">(self, prompt)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1257</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_stdin</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1258</span>     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;raw_input was called, but this frontend does not support input requests.&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1259</span>     <span class="k">raise</span> <span class="n">StdinNotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1260</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_request</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1261</span>     <span class="nb">str</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1262</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_parent_ident</span><span class="p">[</span><span class="s2">&quot;shell&quot;</span><span class="p">],</span>
+<span class="g g-Whitespace">   </span><span class="mi">1263</span>     <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">(</span><span class="s2">&quot;shell&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1264</span>     <span class="n">password</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1265</span> <span class="p">)</span>
+
+<span class="ne">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matched_names</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_code</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">matched_names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ciao: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">matched_names</span><span class="p">)</span><span class="si">}</span><span class="s2">, devi fare un regalo a </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">matched_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;this_year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ciao: Moreno, devi fare un regalo a Nonna Ilda!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># Build assignment dictionary</span>
+<span class="n">assignment_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="n">giftee</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;this_year&quot;</span><span class="p">]</span>
+    <span class="n">assignment_dict</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;giftee&quot;</span><span class="p">:</span> <span class="n">giftee</span>
+    <span class="p">}</span>
+
+<span class="c1"># (Optional) Encode giftees to Base64 to hide them</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="n">encoded_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">code</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;giftee&quot;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;giftee&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">assignment_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;assignments.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">encoded_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Secret Santa 2025</title>
+<style>
+body { font-family: Arial; max-width: 500px; margin: 40px auto; }
+input,button { font-size: 18px; padding: 6px; }
+#result { margin-top: 20px; font-size: 20px; font-weight: bold; }
+</style>
+</head>
+<body>
+<h2>Secret Santa — Inserisci il tuo codice</h2>
+<input id="codeInput" type="text" placeholder="Es. AB10">
+<button onclick="checkCode()">Mostra destinatario</button>
+<div id="result"></div>
+<script>
+// Load JSON once at page load
+let assignments = {};
+
+fetch("assignments.json")
+    .then(response => response.json())
+    .then(data => assignments = data);
+
+function decodeBase64(str) {
+    return atob(str);
+}
+
+function checkCode() {
+    const code = document.getElementById("codeInput").value.trim();
+    const result = document.getElementById("result");
+
+    if (!assignments[code]) {
+        result.innerHTML = "<span style='color:red'>Codice non valido 😢</span>";
+        return;
+    }
+
+    const person = assignments[code]["name"];
+    const giftee = decodeBase64(assignments[code]["giftee"]);
+
+    result.innerHTML = `Ciao <b>${person}</b>! 🎁 Devi fare un regalo a <b style="color:green">${giftee}</b>!`;
+}
+</script>
+</body>
+</html>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By E. Bonetti
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

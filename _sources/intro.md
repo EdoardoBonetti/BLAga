@@ -89,4 +89,6 @@ Matrix cols12 = product.Cols(1,3);
 
 some changes ...  
 
+
+
    
